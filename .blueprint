@@ -1,0 +1,78 @@
+created:
+    - database/factories/AddressFactory.php
+    - database/factories/SupplierTypeFactory.php
+    - database/factories/SupplierRatingFactory.php
+    - database/factories/VendorFactory.php
+    - database/factories/ProductCategoryFactory.php
+    - database/factories/ProductFactory.php
+    - database/factories/ProductDimensionFactory.php
+    - database/factories/ProductSupplierFactory.php
+    - database/factories/RoleFactory.php
+    - database/factories/EmployeeFactory.php
+    - database/factories/DepartmentFactory.php
+    - database/factories/CustomerFactory.php
+    - database/factories/CustomerTypeFactory.php
+    - database/factories/OrderFactory.php
+    - database/factories/OrderItemFactory.php
+    - database/factories/OrderStatusFactory.php
+    - database/factories/PaymentMethodFactory.php
+    - database/factories/AuditLogFactory.php
+    - database/factories/ProductReviewFactory.php
+    - database/migrations/2024_05_23_171718_create_addresses_table.php
+    - database/migrations/2024_05_23_171719_create_supplier_types_table.php
+    - database/migrations/2024_05_23_171720_create_supplier_ratings_table.php
+    - database/migrations/2024_05_23_171721_create_vendors_table.php
+    - database/migrations/2024_05_23_171722_create_product_categories_table.php
+    - database/migrations/2024_05_23_171723_create_products_table.php
+    - database/migrations/2024_05_23_171724_create_product_dimensions_table.php
+    - database/migrations/2024_05_23_171725_create_product_suppliers_table.php
+    - database/migrations/2024_05_23_171726_create_roles_table.php
+    - database/migrations/2024_05_23_171727_create_employees_table.php
+    - database/migrations/2024_05_23_171728_create_departments_table.php
+    - database/migrations/2024_05_23_171729_create_customers_table.php
+    - database/migrations/2024_05_23_171730_create_customer_types_table.php
+    - database/migrations/2024_05_23_171731_create_orders_table.php
+    - database/migrations/2024_05_23_171732_create_order_items_table.php
+    - database/migrations/2024_05_23_171733_create_order_statuses_table.php
+    - database/migrations/2024_05_23_171734_create_payment_methods_table.php
+    - database/migrations/2024_05_23_171735_create_audit_logs_table.php
+    - database/migrations/2024_05_23_171736_create_product_reviews_table.php
+    - app/Models/Address.php
+    - app/Models/SupplierType.php
+    - app/Models/SupplierRating.php
+    - app/Models/Vendor.php
+    - app/Models/ProductCategory.php
+    - app/Models/Product.php
+    - app/Models/ProductDimension.php
+    - app/Models/ProductSupplier.php
+    - app/Models/Role.php
+    - app/Models/Employee.php
+    - app/Models/Department.php
+    - app/Models/Customer.php
+    - app/Models/CustomerType.php
+    - app/Models/Order.php
+    - app/Models/OrderItem.php
+    - app/Models/OrderStatus.php
+    - app/Models/PaymentMethod.php
+    - app/Models/AuditLog.php
+    - app/Models/ProductReview.php
+models:
+    Address: { street_address: 'string:255', city: 'string:255', state: 'string:255', country: 'string:255' }
+    SupplierType: { type: 'string:255' }
+    SupplierRating: { rating: integer }
+    Vendor: { vendor_code: string, business_name: 'string:100', contact_name: 'string:50', contact_email: 'string:100', contact_phone: 'string:20', supplier_type_id: id, supplier_rating_id: id, address_id: id, relationships: { belongsTo: 'SupplierType,SupplierRating,Address' } }
+    ProductCategory: { category_name: 'string:100' }
+    Product: { product_code: 'string:50:unique', name: 'string:100', description: longtext, category_id: id, unit_price: 'decimal:10,2:gte=0', is_discontinued: 'boolean:default=false', relationships: { belongsTo: ProductCategory } }
+    ProductDimension: { product_id: id, length: 'decimal:8,2', width: 'decimal:8,2', height: 'decimal:8,2', weight: 'decimal:8,2', weight_unit: 'string:20', relationships: { belongsTo: Product } }
+    ProductSupplier: { product_id: id, vendor_id: id, quantity: integer, purchase_price: 'decimal:8,2', relationships: { belongsTo: 'Product,Vendor' } }
+    Role: { role_code: 'string:255', name: 'string:255', description: longtext }
+    Employee: { employee_code: 'string:50', first_name: 'string:50', last_name: 'string:50', department_id: id, job_title: 'string:255', hire_date: timestamp, salary: 'decimal:8,2', role_id: id, address_id: id, last_login: timestamp, password: 'string:255', deleted_at: timestamp, relationships: { belongsTo: 'Role,Address' } }
+    Department: { department_name: 'string:100' }
+    Customer: { customer_code: 'string:50:unique', name: 'string:100', customer_type_id: id, address_id: id, relationships: { belongsTo: 'CustomerType,Address' } }
+    CustomerType: { type: 'string:255' }
+    Order: { customer_id: id, order_status_id: id, payment_method_id: id, subtotal: 'decimal:10,2', tax: 'decimal:10,2', shipping: 'decimal:10,2', total: 'decimal:10,2', shipping_address_id: id, relationships: { belongsTo: 'Customer,OrderStatus,PaymentMethod,Address' } }
+    OrderItem: { order_id: id, product_id: id, quantity: integer, unit_price: 'decimal:8,2', relationships: { belongsTo: 'Order,Product' } }
+    OrderStatus: { status: 'string:255' }
+    PaymentMethod: { method: 'string:255' }
+    AuditLog: { user_id: id, table_name: 'string:255', action: 'enum:INSERT,UPDATE,DELETE', old_value: string, new_value: string, relationships: { belongsTo: Employee } }
+    ProductReview: { product_id: id, customer_id: id, rating: integer, review: longtext, relationships: { belongsTo: 'Product,Customer' } }

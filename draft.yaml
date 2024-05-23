@@ -1,0 +1,87 @@
+models:
+  Address:
+    street_address: string:255
+    city: string:255
+    state: string:255
+    country: string:255
+
+  SupplierType:
+    type: string:255
+
+  SupplierRating:
+    rating: integer
+
+  Vendor:
+    vendor_code: string
+    business_name: string:100
+    contact_name: string:50
+    contact_email: string:100
+    contact_phone: string:20
+    supplier_type_id: id
+    supplier_rating_id: id
+    address_id: id
+    relationships:
+      belongsTo: SupplierType,SupplierRating,Address
+
+  ProductCategory:
+    category_name: string:100
+
+  Product:
+    product_code: string:50:unique
+    name: string:100
+    description: longtext
+    category_id: id
+    unit_price: decimal:10,2:gte=0
+    is_discontinued: boolean:default=false
+    relationships:
+      belongsTo: ProductCategory
+
+  ProductDimension:
+    product_id: id
+    length: decimal:8,2
+    width: decimal:8,2
+    height: decimal:8,2
+    weight: decimal:8,2
+    weight_unit: string:20
+    relationships:
+      belongsTo: Product
+
+  ProductSupplier:
+    product_id: id
+    vendor_id: id
+    quantity: integer
+    purchase_price: decimal:8,2
+    relationships:
+      belongsTo: Product,Vendor
+
+  Role:
+    role_code: string:255
+    name: string:255
+    description: longtext
+
+  Employee:
+    employee_code: string:50
+    first_name: string:50
+    last_name: string:50
+    department_id: id
+    job_title: string:255
+    hire_date: timestamp
+    salary: decimal:8,2
+    role_id: id
+    address_id: id
+    last_login: timestamp
+    password: string:255
+    deleted_at: timestamp
+    relationships:
+      belongsTo: Role,Address
+
+  Department:
+    department_name: string:100
+
+  ProductReview:
+    product_id: id
+    customer_id: id
+    rating: integer
+    review: longtext
+    relationships:
+      belongsTo: Product,Customer
