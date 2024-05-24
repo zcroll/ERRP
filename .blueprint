@@ -1,78 +1,99 @@
 created:
+    - database/factories/PersonalInfoFactory.php
     - database/factories/AddressFactory.php
     - database/factories/SupplierTypeFactory.php
-    - database/factories/SupplierRatingFactory.php
     - database/factories/VendorFactory.php
     - database/factories/ProductCategoryFactory.php
     - database/factories/ProductFactory.php
     - database/factories/ProductDimensionFactory.php
     - database/factories/ProductSupplierFactory.php
-    - database/factories/RoleFactory.php
     - database/factories/EmployeeFactory.php
     - database/factories/DepartmentFactory.php
-    - database/factories/CustomerFactory.php
     - database/factories/CustomerTypeFactory.php
-    - database/factories/OrderFactory.php
-    - database/factories/OrderItemFactory.php
+    - database/factories/CustomerFactory.php
     - database/factories/OrderStatusFactory.php
     - database/factories/PaymentMethodFactory.php
+    - database/factories/OrderFactory.php
+    - database/factories/OrderItemFactory.php
     - database/factories/AuditLogFactory.php
     - database/factories/ProductReviewFactory.php
-    - database/migrations/2024_05_23_171718_create_addresses_table.php
-    - database/migrations/2024_05_23_171719_create_supplier_types_table.php
-    - database/migrations/2024_05_23_171720_create_supplier_ratings_table.php
-    - database/migrations/2024_05_23_171721_create_vendors_table.php
-    - database/migrations/2024_05_23_171722_create_product_categories_table.php
-    - database/migrations/2024_05_23_171723_create_products_table.php
-    - database/migrations/2024_05_23_171724_create_product_dimensions_table.php
-    - database/migrations/2024_05_23_171725_create_product_suppliers_table.php
-    - database/migrations/2024_05_23_171726_create_roles_table.php
-    - database/migrations/2024_05_23_171727_create_employees_table.php
-    - database/migrations/2024_05_23_171728_create_departments_table.php
-    - database/migrations/2024_05_23_171729_create_customers_table.php
-    - database/migrations/2024_05_23_171730_create_customer_types_table.php
-    - database/migrations/2024_05_23_171731_create_orders_table.php
-    - database/migrations/2024_05_23_171732_create_order_items_table.php
-    - database/migrations/2024_05_23_171733_create_order_statuses_table.php
-    - database/migrations/2024_05_23_171734_create_payment_methods_table.php
-    - database/migrations/2024_05_23_171735_create_audit_logs_table.php
-    - database/migrations/2024_05_23_171736_create_product_reviews_table.php
+    - database/factories/SalesInvoiceFactory.php
+    - database/factories/PurchaseInvoiceFactory.php
+    - database/factories/PaymentFactory.php
+    - database/factories/AccountFactory.php
+    - database/factories/FinancialTransactionFactory.php
+    - database/factories/StockEntryFactory.php
+    - database/migrations/2024_05_24_163223_create_personal_infos_table.php
+    - database/migrations/2024_05_24_163224_create_addresses_table.php
+    - database/migrations/2024_05_24_163225_create_supplier_types_table.php
+    - database/migrations/2024_05_24_163226_create_vendors_table.php
+    - database/migrations/2024_05_24_163227_create_product_categories_table.php
+    - database/migrations/2024_05_24_163228_create_products_table.php
+    - database/migrations/2024_05_24_163229_create_product_dimensions_table.php
+    - database/migrations/2024_05_24_163230_create_product_suppliers_table.php
+    - database/migrations/2024_05_24_163231_create_employees_table.php
+    - database/migrations/2024_05_24_163232_create_departments_table.php
+    - database/migrations/2024_05_24_163233_create_customer_types_table.php
+    - database/migrations/2024_05_24_163234_create_customers_table.php
+    - database/migrations/2024_05_24_163235_create_order_statuses_table.php
+    - database/migrations/2024_05_24_163236_create_payment_methods_table.php
+    - database/migrations/2024_05_24_163237_create_orders_table.php
+    - database/migrations/2024_05_24_163238_create_order_items_table.php
+    - database/migrations/2024_05_24_163239_create_audit_logs_table.php
+    - database/migrations/2024_05_24_163240_create_product_reviews_table.php
+    - database/migrations/2024_05_24_163241_create_sales_invoices_table.php
+    - database/migrations/2024_05_24_163242_create_purchase_invoices_table.php
+    - database/migrations/2024_05_24_163243_create_payments_table.php
+    - database/migrations/2024_05_24_163244_create_accounts_table.php
+    - database/migrations/2024_05_24_163245_create_financial_transactions_table.php
+    - database/migrations/2024_05_24_163246_create_stock_entries_table.php
+    - app/Models/PersonalInfo.php
     - app/Models/Address.php
     - app/Models/SupplierType.php
-    - app/Models/SupplierRating.php
     - app/Models/Vendor.php
     - app/Models/ProductCategory.php
     - app/Models/Product.php
     - app/Models/ProductDimension.php
     - app/Models/ProductSupplier.php
-    - app/Models/Role.php
     - app/Models/Employee.php
     - app/Models/Department.php
-    - app/Models/Customer.php
     - app/Models/CustomerType.php
-    - app/Models/Order.php
-    - app/Models/OrderItem.php
+    - app/Models/Customer.php
     - app/Models/OrderStatus.php
     - app/Models/PaymentMethod.php
+    - app/Models/Order.php
+    - app/Models/OrderItem.php
     - app/Models/AuditLog.php
     - app/Models/ProductReview.php
+    - app/Models/SalesInvoice.php
+    - app/Models/PurchaseInvoice.php
+    - app/Models/Payment.php
+    - app/Models/Account.php
+    - app/Models/FinancialTransaction.php
+    - app/Models/StockEntry.php
 models:
-    Address: { street_address: 'string:255', city: 'string:255', state: 'string:255', country: 'string:255' }
-    SupplierType: { type: 'string:255' }
-    SupplierRating: { rating: integer }
-    Vendor: { vendor_code: string, business_name: 'string:100', contact_name: 'string:50', contact_email: 'string:100', contact_phone: 'string:20', supplier_type_id: id, supplier_rating_id: id, address_id: id, relationships: { belongsTo: 'SupplierType,SupplierRating,Address' } }
-    ProductCategory: { category_name: 'string:100' }
-    Product: { product_code: 'string:50:unique', name: 'string:100', description: longtext, category_id: id, unit_price: 'decimal:10,2:gte=0', is_discontinued: 'boolean:default=false', relationships: { belongsTo: ProductCategory } }
-    ProductDimension: { product_id: id, length: 'decimal:8,2', width: 'decimal:8,2', height: 'decimal:8,2', weight: 'decimal:8,2', weight_unit: 'string:20', relationships: { belongsTo: Product } }
-    ProductSupplier: { product_id: id, vendor_id: id, quantity: integer, purchase_price: 'decimal:8,2', relationships: { belongsTo: 'Product,Vendor' } }
-    Role: { role_code: 'string:255', name: 'string:255', description: longtext }
-    Employee: { employee_code: 'string:50', first_name: 'string:50', last_name: 'string:50', department_id: id, job_title: 'string:255', hire_date: timestamp, salary: 'decimal:8,2', role_id: id, address_id: id, last_login: timestamp, password: 'string:255', deleted_at: timestamp, relationships: { belongsTo: 'Role,Address' } }
-    Department: { department_name: 'string:100' }
-    Customer: { customer_code: 'string:50:unique', name: 'string:100', customer_type_id: id, address_id: id, relationships: { belongsTo: 'CustomerType,Address' } }
-    CustomerType: { type: 'string:255' }
-    Order: { customer_id: id, order_status_id: id, payment_method_id: id, subtotal: 'decimal:10,2', tax: 'decimal:10,2', shipping: 'decimal:10,2', total: 'decimal:10,2', shipping_address_id: id, relationships: { belongsTo: 'Customer,OrderStatus,PaymentMethod,Address' } }
-    OrderItem: { order_id: id, product_id: id, quantity: integer, unit_price: 'decimal:8,2', relationships: { belongsTo: 'Order,Product' } }
+    User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable' }
+    PersonalInfo: { first_name: 'string:50:index', last_name: 'string:50:index', email: 'string:100:unique', phone: 'string:20:index' }
+    Address: { street_address: 'string:255', city: 'string:255:index', state: 'string:255:index', country: 'string:255:index' }
+    SupplierType: { type: 'string:255:index' }
+    Vendor: { vendor_code: string, business_name: 'string:100:index', relationships: { belongsTo: 'SupplierType,SupplierRating,Address,PersonalInfo' } }
+    ProductCategory: { category_name: 'string:100:index' }
+    Product: { product_code: 'string:50:unique', name: 'string:100:index', description: longtext, unit_price: 'decimal:10,2:gte=0', is_discontinued: boolean, relationships: { belongsTo: ProductCategory } }
+    ProductDimension: { dimensions: json, weight: 'decimal:8,2:index', weight_unit: 'string:20:index', relationships: { belongsTo: Product } }
+    ProductSupplier: { quantity: integer, purchase_price: 'decimal:8,2:index', relationships: { belongsTo: 'Product,Vendor' } }
+    Employee: { employee_code: 'string:50:unique', job_title: 'string:255:index', hire_date: timestamp, salary: 'decimal:8,2:index', relationships: { belongsTo: 'Address,PersonalInfo' } }
+    Department: { department_name: 'string:100:index' }
+    CustomerType: { type: 'string:255:index' }
+    Customer: { customer_code: 'string:50:unique', relationships: { belongsTo: 'CustomerType,Address,PersonalInfo' } }
     OrderStatus: { status: 'string:255' }
     PaymentMethod: { method: 'string:255' }
-    AuditLog: { user_id: id, table_name: 'string:255', action: 'enum:INSERT,UPDATE,DELETE', old_value: string, new_value: string, relationships: { belongsTo: Employee } }
-    ProductReview: { product_id: id, customer_id: id, rating: integer, review: longtext, relationships: { belongsTo: 'Product,Customer' } }
+    Order: { shipping_address_id: id, relationships: { belongsTo: 'Customer,OrderStatus,PaymentMethod,Address' } }
+    OrderItem: { quantity: integer, unit_price: 'decimal:8,2', relationships: { belongsTo: 'Order,Product' } }
+    AuditLog: { table_name: 'string:255', action: 'enum:INSERT,UPDATE,DELETE', old_value: string, new_value: string, relationships: { belongsTo: Employee } }
+    ProductReview: { rating: integer, relationships: { belongsTo: 'Product,Customer' } }
+    SalesInvoice: { invoice_date: timestamp, invoice_number: string, total_amount: 'decimal:10,2:index', status: 'string:255:index', relationships: { belongsTo: Order } }
+    PurchaseInvoice: { invoice_date: timestamp, invoice_number: string, total_amount: 'decimal:10,2:index', status: 'string:255:index', relationships: { belongsTo: Vendor } }
+    Payment: { payment_date: timestamp, amount: 'decimal:10,2:index', relationships: { belongsTo: PaymentMethod } }
+    Account: { account_code: 'string:255', name: 'string:255:index' }
+    FinancialTransaction: { transaction_date: timestamp, type: 'enum:DEBIT,CREDIT:index', relationships: { belongsTo: 'Payment,Account' } }
+    StockEntry: { entry_date: timestamp, type: 'enum:STOCK_IN, STOCK_OUT:index', relationships: { belongsTo: Product } }

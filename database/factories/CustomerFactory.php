@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\Address;
 use App\Models\Customer;
 use App\Models\CustomerType;
+use App\Models\PersonalInfo;
 
 class CustomerFactory extends Factory
 {
@@ -24,9 +25,9 @@ class CustomerFactory extends Factory
     {
         return [
             'customer_code' => $this->faker->regexify('[A-Za-z0-9]{50}'),
-            'name' => $this->faker->name(),
             'customer_type_id' => CustomerType::factory(),
             'address_id' => Address::factory(),
+            'personal_info_id' => PersonalInfo::factory(),
         ];
     }
 }

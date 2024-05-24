@@ -26,14 +26,10 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
+            'shipping_address_id' => ShippingAddress::factory(),
             'customer_id' => Customer::factory(),
             'order_status_id' => OrderStatus::factory(),
             'payment_method_id' => PaymentMethod::factory(),
-            'subtotal' => $this->faker->randomFloat(2, 0, 99999999.99),
-            'tax' => $this->faker->randomFloat(2, 0, 99999999.99),
-            'shipping' => $this->faker->randomFloat(2, 0, 99999999.99),
-            'total' => $this->faker->randomFloat(2, 0, 99999999.99),
-            'shipping_address_id' => ShippingAddress::factory(),
             'address_id' => Address::factory(),
         ];
     }

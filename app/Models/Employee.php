@@ -17,25 +17,11 @@ class Employee extends Model
      */
     protected $fillable = [
         'employee_code',
-        'first_name',
-        'last_name',
-        'department_id',
         'job_title',
         'hire_date',
         'salary',
-        'role_id',
         'address_id',
-        'last_login',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
+        'personal_info_id',
     ];
 
     /**
@@ -45,27 +31,19 @@ class Employee extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'department_id' => 'integer',
         'hire_date' => 'timestamp',
         'salary' => 'decimal:2',
-        'role_id' => 'integer',
         'address_id' => 'integer',
-        'last_login' => 'timestamp',
-        'deleted_at' => 'timestamp',
+        'personal_info_id' => 'integer',
     ];
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
 
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
     }
 
-    public function department(): BelongsTo
+    public function personalInfo(): BelongsTo
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(PersonalInfo::class);
     }
 }

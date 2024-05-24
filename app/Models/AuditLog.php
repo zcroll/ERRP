@@ -16,7 +16,6 @@ class AuditLog extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
         'table_name',
         'action',
         'old_value',
@@ -31,17 +30,11 @@ class AuditLog extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'user_id' => 'integer',
         'employee_id' => 'integer',
     ];
 
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

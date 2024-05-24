@@ -16,10 +16,9 @@ class ProductReview extends Model
      * @var array
      */
     protected $fillable = [
+        'rating',
         'product_id',
         'customer_id',
-        'rating',
-        'review',
     ];
 
     /**

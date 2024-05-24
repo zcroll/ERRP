@@ -57,13 +57,33 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Product')
-                    ->icon('heroicon-o-shopping-cart'),
+                    ->label('Products & Inventory')
+                    ->icon('heroicon-o-building-office'),
 
+                NavigationGroup::make()
+                    ->label('Sales & Orders')
+                    ->icon('heroicon-o-presentation-chart-line'),
                 NavigationGroup::make()
                     ->label(fn (): string => __('navigation.settings'))
                     ->icon('heroicon-o-cog-6-tooth')
                     ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Financial Management')
+                    ->icon('heroicon-o-banknotes'),
+                NavigationGroup::make()
+                    ->label('User Management')
+//                    ->icon('heroicon-o-shield-check'),
+
+
+
+
+
+
+            ])
+
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
             ]);
+
     }
 }

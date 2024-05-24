@@ -17,9 +17,9 @@ class Customer extends Model
      */
     protected $fillable = [
         'customer_code',
-        'name',
         'customer_type_id',
         'address_id',
+        'personal_info_id',
     ];
 
     /**
@@ -31,6 +31,7 @@ class Customer extends Model
         'id' => 'integer',
         'customer_type_id' => 'integer',
         'address_id' => 'integer',
+        'personal_info_id' => 'integer',
     ];
 
     public function customerType(): BelongsTo
@@ -41,5 +42,10 @@ class Customer extends Model
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function personalInfo(): BelongsTo
+    {
+        return $this->belongsTo(PersonalInfo::class);
     }
 }

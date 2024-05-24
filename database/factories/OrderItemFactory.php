@@ -23,10 +23,10 @@ class OrderItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'order_id' => Order::factory(),
-            'product_id' => Product::factory(),
             'quantity' => $this->faker->numberBetween(-10000, 10000),
             'unit_price' => $this->faker->randomFloat(2, 0, 999999.99),
+            'order_id' => Order::factory(),
+            'product_id' => Product::factory(),
         ];
     }
 }

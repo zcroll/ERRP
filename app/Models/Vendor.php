@@ -18,12 +18,10 @@ class Vendor extends Model
     protected $fillable = [
         'vendor_code',
         'business_name',
-        'contact_name',
-        'contact_email',
-        'contact_phone',
         'supplier_type_id',
         'supplier_rating_id',
         'address_id',
+        'personal_info_id',
     ];
 
     /**
@@ -36,6 +34,7 @@ class Vendor extends Model
         'supplier_type_id' => 'integer',
         'supplier_rating_id' => 'integer',
         'address_id' => 'integer',
+        'personal_info_id' => 'integer',
     ];
 
     public function supplierType(): BelongsTo
@@ -43,13 +42,14 @@ class Vendor extends Model
         return $this->belongsTo(SupplierType::class);
     }
 
-    public function supplierRating(): BelongsTo
-    {
-        return $this->belongsTo(SupplierRating::class);
-    }
 
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function personalInfo(): BelongsTo
+    {
+        return $this->belongsTo(PersonalInfo::class);
     }
 }

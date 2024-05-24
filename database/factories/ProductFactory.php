@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductCategory;
 
@@ -26,7 +25,6 @@ class ProductFactory extends Factory
             'product_code' => $this->faker->regexify('[A-Za-z0-9]{50}'),
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
-            'category_id' => Category::factory(),
             'unit_price' => $this->faker->randomFloat(2, 0, 99999999.99),
             'is_discontinued' => $this->faker->boolean(),
             'product_category_id' => ProductCategory::factory(),

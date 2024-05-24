@@ -23,10 +23,10 @@ class ProductSupplierFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Product::factory(),
-            'vendor_id' => Vendor::factory(),
             'quantity' => $this->faker->numberBetween(-10000, 10000),
             'purchase_price' => $this->faker->randomFloat(2, 0, 999999.99),
+            'product_id' => Product::factory(),
+            'vendor_id' => Vendor::factory(),
         ];
     }
 }

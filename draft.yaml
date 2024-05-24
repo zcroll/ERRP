@@ -1,87 +1,134 @@
 models:
+  PersonalInfo:
+    first_name: string:50:index
+    last_name: string:50:index
+    email: string:100:unique
+    phone: string:20:index
+
   Address:
     street_address: string:255
-    city: string:255
-    state: string:255
-    country: string:255
+    city: string:255:index
+    state: string:255:index
+    country: string:255:index
 
   SupplierType:
-    type: string:255
-
-  SupplierRating:
-    rating: integer
+    type: string:255:index
 
   Vendor:
     vendor_code: string
-    business_name: string:100
-    contact_name: string:50
-    contact_email: string:100
-    contact_phone: string:20
-    supplier_type_id: id
-    supplier_rating_id: id
-    address_id: id
+    business_name: string:100:index
     relationships:
-      belongsTo: SupplierType,SupplierRating,Address
+      belongsTo: SupplierType,SupplierRating,Address,PersonalInfo
 
   ProductCategory:
-    category_name: string:100
+    category_name: string:100:index
 
   Product:
     product_code: string:50:unique
-    name: string:100
+    name: string:100:index
     description: longtext
-    category_id: id
     unit_price: decimal:10,2:gte=0
-    is_discontinued: boolean:default=false
+    is_discontinued: boolean
     relationships:
       belongsTo: ProductCategory
 
   ProductDimension:
-    product_id: id
-    length: decimal:8,2
-    width: decimal:8,2
-    height: decimal:8,2
-    weight: decimal:8,2
-    weight_unit: string:20
+    dimensions: json
+    weight: decimal:8,2:index
+    weight_unit: string:20:index
     relationships:
       belongsTo: Product
 
   ProductSupplier:
-    product_id: id
-    vendor_id: id
     quantity: integer
-    purchase_price: decimal:8,2
+    purchase_price: decimal:8,2:index
     relationships:
       belongsTo: Product,Vendor
 
-  Role:
-    role_code: string:255
-    name: string:255
-    description: longtext
 
   Employee:
-    employee_code: string:50
-    first_name: string:50
-    last_name: string:50
-    department_id: id
-    job_title: string:255
+    employee_code: string:50:unique
+    job_title: string:255:index
     hire_date: timestamp
-    salary: decimal:8,2
-    role_id: id
-    address_id: id
-    last_login: timestamp
-    password: string:255
-    deleted_at: timestamp
+    salary: decimal:8,2:index
     relationships:
-      belongsTo: Role,Address
+      belongsTo: Address,PersonalInfo
 
   Department:
-    department_name: string:100
+    department_name: string:100:index
+
+  CustomerType:
+    type: string:255:index
+
+  Customer:
+    customer_code: string:50:uniqueCustomers
+    relationships:
+      belongsTo: CustomerType,Address,PersonalInfo
+
+  OrderStatus:
+    status: string:255
+
+  PaymentMethod:
+    method: string:255
+
+  Order:
+    shipping_address_id: id
+    relationships:
+      belongsTo: Customer,OrderStatus,PaymentMethod,Address
+
+  OrderItem:
+    quantity: integer
+    unit_price: decimal:8,2
+    relationships:
+      belongsTo: Order,Product
+
+  AuditLog:
+    table_name: string:255
+    action: enum:INSERT,UPDATE,DELETE
+    old_value: string
+    new_value: string
+    relationships:
+      belongsTo: Employee
 
   ProductReview:
-    product_id: id
-    customer_id: id
     rating: integer
-    review: longtext
     relationships:
       belongsTo: Product,Customer
+
+  SalesInvoice:
+    invoice_date: timestamp
+    invoice_number: string
+    total_amount: decimal:10,2:index
+    status: string:255:index
+    relationships:
+      belongsTo: Order
+
+  PurchaseInvoice:
+    invoice_date: timestamp
+    invoice_number: string
+    total_amount: decimal:10,2:index
+    status: string:255:index
+    relationships:
+      belongsTo: Vendor
+
+  Payment:
+    payment_date: timestamp
+    amount: decimal:10,2:index
+    relationships:
+      belongsTo: PaymentMethod
+
+  Account:
+    account_code: string:255
+    name: string:255:index
+
+  FinancialTransaction:
+    transaction_date: timestamp
+    type: enum:DEBIT,CREDIT:index
+    relationships:
+      belongsTo: Payment,Account
+
+  StockEntry:
+    entry_date: timestamp
+    type: enum:STOCK_IN, STOCK_OUT:index
+    relationships:
+      belongsTo: Product

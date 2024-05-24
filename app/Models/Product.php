@@ -19,7 +19,6 @@ class Product extends Model
         'product_code',
         'name',
         'description',
-        'category_id',
         'unit_price',
         'is_discontinued',
         'product_category_id',
@@ -32,7 +31,6 @@ class Product extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'category_id' => 'integer',
         'unit_price' => 'decimal:2',
         'is_discontinued' => 'boolean',
         'product_category_id' => 'integer',
@@ -41,10 +39,5 @@ class Product extends Model
     public function productCategory(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class);
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\ProductCategory::class);
     }
 }

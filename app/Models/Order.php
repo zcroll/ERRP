@@ -16,14 +16,10 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
+        'shipping_address_id',
         'customer_id',
         'order_status_id',
         'payment_method_id',
-        'subtotal',
-        'tax',
-        'shipping',
-        'total',
-        'shipping_address_id',
         'address_id',
     ];
 
@@ -34,14 +30,10 @@ class Order extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'shipping_address_id' => 'integer',
         'customer_id' => 'integer',
         'order_status_id' => 'integer',
         'payment_method_id' => 'integer',
-        'subtotal' => 'decimal:2',
-        'tax' => 'decimal:2',
-        'shipping' => 'decimal:2',
-        'total' => 'decimal:2',
-        'shipping_address_id' => 'integer',
         'address_id' => 'integer',
     ];
 
@@ -65,8 +57,5 @@ class Order extends Model
         return $this->belongsTo(Address::class);
     }
 
-    public function shippingAddress(): BelongsTo
-    {
-        return $this->belongsTo(ShippingAddress::class);
-    }
+
 }

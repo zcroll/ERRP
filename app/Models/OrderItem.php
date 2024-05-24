@@ -16,10 +16,10 @@ class OrderItem extends Model
      * @var array
      */
     protected $fillable = [
-        'order_id',
-        'product_id',
         'quantity',
         'unit_price',
+        'order_id',
+        'product_id',
     ];
 
     /**
@@ -29,9 +29,9 @@ class OrderItem extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'unit_price' => 'decimal:2',
         'order_id' => 'integer',
         'product_id' => 'integer',
-        'unit_price' => 'decimal:2',
     ];
 
     public function order(): BelongsTo

@@ -23,10 +23,9 @@ class ProductReviewFactory extends Factory
     public function definition(): array
     {
         return [
+            'rating' => $this->faker->numberBetween(-10000, 10000),
             'product_id' => Product::factory(),
             'customer_id' => Customer::factory(),
-            'rating' => $this->faker->numberBetween(-10000, 10000),
-            'review' => $this->faker->text(),
         ];
     }
 }

@@ -16,12 +16,10 @@ class ProductDimension extends Model
      * @var array
      */
     protected $fillable = [
-        'product_id',
-        'length',
-        'width',
-        'height',
+        'dimensions',
         'weight',
         'weight_unit',
+        'product_id',
     ];
 
     /**
@@ -31,11 +29,9 @@ class ProductDimension extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'product_id' => 'integer',
-        'length' => 'decimal:2',
-        'width' => 'decimal:2',
-        'height' => 'decimal:2',
+        'dimensions' => 'array',
         'weight' => 'decimal:2',
+        'product_id' => 'integer',
     ];
 
     public function product(): BelongsTo

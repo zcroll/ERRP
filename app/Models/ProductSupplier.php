@@ -16,10 +16,10 @@ class ProductSupplier extends Model
      * @var array
      */
     protected $fillable = [
-        'product_id',
-        'vendor_id',
         'quantity',
         'purchase_price',
+        'product_id',
+        'vendor_id',
     ];
 
     /**
@@ -29,9 +29,9 @@ class ProductSupplier extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'purchase_price' => 'decimal:2',
         'product_id' => 'integer',
         'vendor_id' => 'integer',
-        'purchase_price' => 'decimal:2',
     ];
 
     public function product(): BelongsTo

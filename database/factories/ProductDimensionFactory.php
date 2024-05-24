@@ -22,12 +22,10 @@ class ProductDimensionFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Product::factory(),
-            'length' => $this->faker->randomFloat(2, 0, 999999.99),
-            'width' => $this->faker->randomFloat(2, 0, 999999.99),
-            'height' => $this->faker->randomFloat(2, 0, 999999.99),
+            'dimensions' => '{}',
             'weight' => $this->faker->randomFloat(2, 0, 999999.99),
             'weight_unit' => $this->faker->regexify('[A-Za-z0-9]{20}'),
+            'product_id' => Product::factory(),
         ];
     }
 }
