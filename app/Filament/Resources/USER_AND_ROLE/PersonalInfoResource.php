@@ -16,7 +16,7 @@ class PersonalInfoResource extends Resource
     protected static ?string $model = PersonalInfo::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
-    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $navigationGroup = 'User Management ';
 
     public static function form(Form $form): Form
     {

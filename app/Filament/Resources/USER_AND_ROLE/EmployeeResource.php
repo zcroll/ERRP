@@ -8,6 +8,7 @@ use App\Filament\Resources\USER_AND_ROLE;
 use App\Models\Employee;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -17,7 +18,9 @@ class EmployeeResource extends Resource
     protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
-    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $navigationGroup = 'User Management ';
+//    protected static \Filament\Pages\SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
 
     public static function form(Form $form): Form
     {
@@ -27,10 +30,9 @@ class EmployeeResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('job_title')
                     ->required(),
-                Forms\Components\DateTimePicker::make('hire_date')
+                Forms\Components\DatePicker::make('hire_date')
                     ->required(),
                 Forms\Components\TextInput::make('salary')
-                    ->required()
                     ->numeric(),
                 Forms\Components\Select::make('address_id')
                     ->relationship('address', 'id')

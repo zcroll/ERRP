@@ -8,4 +8,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    content: [
+        './resources/**/*.blade.php',
+        './vendor/filament/**/*.blade.php',
+        './vendor/andrewdwallo/filament-companies/resources/views/**/*.blade.php', //
+    ],
 });

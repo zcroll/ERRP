@@ -7,6 +7,8 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\Page;
+use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,6 +18,8 @@ class ProductResource extends Resource
     protected static ?string $model = Product::class;
     protected static ?string $navigationGroup = "Products & Inventory";
 
+
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Start;
 //    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -85,9 +89,20 @@ class ProductResource extends Resource
         ];
     }
 
+
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            ProductResource\Pages\ListProducts::class,
+
+        ]);
+    }
+
     public static function getPages(): array
     {
         return [
+            'list' => ProductResource\Pages\ListProducts::route('/list'),
             'index' => ProductResource\Pages\ListProducts::route('/'),
             'create' => ProductResource\Pages\CreateProduct::route('/create'),
             'edit' => ProductResource\Pages\EditProduct::route('/{record}/edit'),

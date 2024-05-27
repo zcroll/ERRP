@@ -11,12 +11,12 @@ observers:
   auto_invoke_app: false
   enabled_in_testing: false
   dump: false
-  original_dump: true
+  original_dump: false
   queries: false
-  slow_queries: false
+  slow_queries: true
   mail: false
   logs: true
-  http: false
+  http: true
   jobs: false
   commands: false
   scheduled_commands: false
