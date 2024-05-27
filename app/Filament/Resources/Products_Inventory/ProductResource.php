@@ -7,12 +7,12 @@ use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Pages\Page;
+//use Filament\Pages\Page;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
+use Filament\Resources\Pages\Page;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
@@ -73,8 +73,7 @@ class ProductResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ViewAction::make(),            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -94,16 +93,15 @@ class ProductResource extends Resource
     public static function getRecordSubNavigation(Page $page): array
     {
         return $page->generateNavigationItems([
-            ProductResource\Pages\ListProducts::class,
-
+            ProductResource\Pages\CreateProduct::class,
+            ProductResource\Pages\CreateProduct::class
         ]);
     }
-
     public static function getPages(): array
     {
         return [
-            'list' => ProductResource\Pages\ListProducts::route('/list'),
-            'index' => ProductResource\Pages\ListProducts::route('/'),
+
+            'index' => ProductResource\Pages\ListProducts::route('/list'),
             'create' => ProductResource\Pages\CreateProduct::route('/create'),
             'edit' => ProductResource\Pages\EditProduct::route('/{record}/edit'),
         ];
