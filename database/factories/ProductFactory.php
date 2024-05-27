@@ -24,6 +24,7 @@ class ProductFactory extends Factory
         return [
             'product_code' => $this->faker->regexify('[A-Za-z0-9]{50}'),
             'name' => $this->faker->name(),
+            'image' => $this->faker->regexify('[A-Za-z0-9]{500}'),
             'description' => $this->faker->text(),
             'unit_price' => $this->faker->randomFloat(2, 0, 99999999.99),
             'is_discontinued' => $this->faker->boolean(),

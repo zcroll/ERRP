@@ -26,6 +26,7 @@ models:
   Product:
     product_code: string:50:unique
     name: string:100:index
+    image: string:500
     description: longtext
     unit_price: decimal:10,2:gte=0
     is_discontinued: boolean

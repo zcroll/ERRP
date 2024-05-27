@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Filament\Resources\Blog\PostResource\Pages;
+namespace App\Filament\Resources\Products_Inventory\ProductResource\Pages;
 
-use App\Filament\Resources\Blog\PostResource;
 use App\Filament\Resources\Products_Inventory\ProductResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('product_code', 50);
             $table->string('name', 100);
+            $table->string('image', 500);
             $table->longText('description');
             $table->decimal('unit_price', 10, 2);
             $table->boolean('is_discontinued');
