@@ -28,7 +28,7 @@ class Product extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var arrayCall to undefined method App\Models\Product::productSupplier()
      */
     protected $casts = [
         'id' => 'integer',
@@ -37,6 +37,14 @@ class Product extends Model
         'product_category_id' => 'integer',
     ];
 
+    public function productSupplier()
+    {
+        return $this->hasMany(\App\Models\ProductSupplier::class);
+    }
+    public function productDimension()
+    {
+        return $this->hasOne(ProductDimension::class);
+    }
     public function productCategory(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class);

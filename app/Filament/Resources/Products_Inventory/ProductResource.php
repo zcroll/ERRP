@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Products_Inventory;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +19,7 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = "Products & Inventory";
 
 
-    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Start;
 //    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -62,7 +60,7 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_discontinued')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('productCategory.name')
+                Tables\Columns\TextColumn::make('productCategory.category_name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -121,6 +119,7 @@ class ProductResource extends Resource
                                 ]),
                             Components\ImageEntry::make('image')
                                 ->hiddenLabel()
+                                ->columnSpanFull()
                                 ->grow(false),
                         ])->from(''),
                     ]),
@@ -140,7 +139,9 @@ class ProductResource extends Resource
         return $page->generateNavigationItems([
 //            ProductResource\Pages\CreateProduct::class,
             ProductResource\Pages\ViewProduct::class,
-            ProductResource\Pages\EditProduct::class
+            ProductResource\Pages\EditProduct::class,
+            ProductResource\Pages\ManageProductDimensions::class,
+            ProductResource\Pages\ManageProductSuppliers::class
         ]);
     }
     public static function getPages(): array
@@ -148,6 +149,8 @@ class ProductResource extends Resource
         return [
 
             'create' => ProductResource\Pages\CreateProduct::route('/create'),
+            'dimension' => ProductResource\Pages\ManageProductDimensions::route('/{record}/demension'),
+            'suplier' => ProductResource\Pages\ManageProductSuppliers::route('/{record}/suplier'),
             'index' => ProductResource\Pages\ListProducts::route('/'),
             'view' => ProductResource\Pages\ViewProduct::route('/{record}'),
             'edit' => ProductResource\Pages\EditProduct::route('/{record}/edit'),
