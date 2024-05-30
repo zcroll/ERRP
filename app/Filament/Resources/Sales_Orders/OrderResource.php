@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Sales_Orders;
 
 use App\Enums\OrderStatus;
+use App\Filament\Resources\Sales_Orders\OrderResource\Widgets\OrderStats;
 use App\Models\Order;
 use App\Models\Product;
 use Filament\Forms;
@@ -160,6 +161,13 @@ class OrderResource extends Resource
             Select::make('address')
                 ->relationship('address', 'street_address')
                 ->required(),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            OrderStats::class,
         ];
     }
 

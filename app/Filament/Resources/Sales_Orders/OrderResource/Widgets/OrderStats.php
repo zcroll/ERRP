@@ -12,8 +12,10 @@ use Flowframe\Trend\TrendValue;
 
 class OrderStats extends BaseWidget
 {
+
     use InteractsWithPageTable;
 
+    protected static ?string $pollingInterval = null;
 
     protected function getTablePage(): string
     {
