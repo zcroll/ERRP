@@ -3,12 +3,9 @@
 namespace App\Filament\Resources\Sales_Orders;
 
 use App\Enums\OrderStatus;
-use App\Filament\Resources\Products_Inventory\ProductResource;
-use App\Filament\Resources\Sales_Orders\OrderResource\Widgets\OrderStats;
 use App\Models\Order;
 use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -36,7 +33,7 @@ class OrderResource extends Resource
                         Forms\Components\Section::make()
                             ->schema(static::getDetailsFormSchema())
                             ->columns(2),
-                        Forms\Components\Section::make('items')
+                        Forms\Components\Section::make('Order items')
                             ->schema([
                                 static::getOrderItemsRepeater(),
                             ]),
@@ -69,13 +66,6 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->badge(),
                 Tables\Columns\TextColumn::make('paymentMethod.method')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('total_price')
-                    ->summarize([
-                        Tables\Columns\Summarizers\Sum::make()
-                            ->money(),
-                    ])
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('address.street_address')
@@ -146,26 +136,9 @@ class OrderResource extends Resource
                     ->columnSpan([
                         'md' => 3,
                     ]),
-            ])->defaultItems(1)
-            ->required()
-            ->extraItemActions([
-                Action::make('openProduct')
-                    ->tooltip('Open product')
-                    ->icon('heroicon-m-arrow-top-right-on-square')
-                    ->url(function (array $arguments, Repeater $component): ?string {
-                        $itemData = $component->getRawItemState($arguments['item']);
-
-                        $product = Product::find($itemData['product_id']);
-
-                        if (! $product) {
-                            return null;
-                        }
-
-                        return ProductResource::getUrl('edit', ['record' => $product]);
-                    }, shouldOpenInNewTab: true)
-                    ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['product_id'])),
-            ]);
-
+            ])
+            ->defaultItems(1)
+            ->required();
     }
 
     public static function getDetailsFormSchema(): array
@@ -184,7 +157,7 @@ class OrderResource extends Resource
                 ->relationship('paymentMethod', 'method')
                 ->required(),
 
-            Select::make('address_id')
+            Select::make('address')
                 ->relationship('address', 'street_address')
                 ->required(),
         ];
@@ -194,22 +167,6 @@ class OrderResource extends Resource
     {
         return Order::with(['customer.personalInfo']);
     }
-
-    public static function getWidgets(): array
-    {
-        return [
-            OrderStats::class,
-        ];
-    }
-    public static function relations()
-    {
-        return [
-            'orderItems',
-            'orderItems.product'
-        ];
-    }
-
-
     public static function getPages(): array
     {
         return [
