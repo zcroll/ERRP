@@ -66,16 +66,17 @@ models:
     relationships:
       belongsTo: CustomerType,Address,PersonalInfo
 
-  OrderStatus:
-    status: string:255
+
 
   PaymentMethod:
     method: string:255
 
   Order:
-    shipping_address_id: id
+    address_id: id
+    total_price: decimal:8,2
+    status: string:255
     relationships:
-      belongsTo: Customer,OrderStatus,PaymentMethod,Address
+      belongsTo: Customer,PaymentMethod,Address
 
   OrderItem:
     quantity: integer

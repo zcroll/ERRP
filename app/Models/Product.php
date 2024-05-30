@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -28,7 +29,7 @@ class Product extends Model
     /**
      * The attributes that should be cast to native types.
      *
-     * @var arrayCall to undefined method App\Models\Product::productSupplier()
+     * @var array
      */
     protected $casts = [
         'id' => 'integer',
@@ -37,16 +38,19 @@ class Product extends Model
         'product_category_id' => 'integer',
     ];
 
-    public function productSupplier()
-    {
-        return $this->hasMany(\App\Models\ProductSupplier::class);
-    }
-    public function productDimension()
-    {
-        return $this->hasOne(ProductDimension::class);
-    }
     public function productCategory(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class);
     }
+
+    public function productDimension(): HasOne
+    {
+        return $this->hasOne(ProductDimension::class);
+    }
+
+    public function productSupplier(): HasOne
+    {
+        return $this->hasOne(ProductDimension::class);
+    }
+
 }

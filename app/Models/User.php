@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasDefaultTenant;
@@ -25,7 +26,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasDefaul
     use HasProfilePhoto;
     use Notifiable;
     use HasRoles;
-
+    use HasPanelShield;
     /**
      * The attributes that are mass assignable.
      *
