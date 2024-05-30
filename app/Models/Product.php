@@ -33,7 +33,6 @@ class Product extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'unit_price' => 'decimal:2',
         'is_discontinued' => 'boolean',
         'product_category_id' => 'integer',
     ];

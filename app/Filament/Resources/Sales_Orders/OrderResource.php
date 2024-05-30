@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Sales_Orders;
 
 use App\Enums\OrderStatus;
+use App\Filament\Resources\Sales_Orders\OrderResource\Widgets\OrderStats;
 use App\Models\Order;
 use App\Models\Product;
 use Filament\Forms;
@@ -15,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelIdea\Helper\App\Models\_IH_Order_QB;
+use Random\RandomException;
 
 class OrderResource extends Resource
 {
@@ -71,6 +73,9 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('address.street_address')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('total_price')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -110,7 +115,7 @@ class OrderResource extends Resource
                     ->options(Product::query()->pluck('name', 'id'))
                     ->required()
                     ->reactive()
-                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('unit_price', Product::find($state)?->price ?? 0))
+                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('unit_price', Product::find($state)?->unit_price ?? 0))
                     ->distinct()
                     ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                     ->columnSpan([
@@ -141,11 +146,25 @@ class OrderResource extends Resource
             ->required();
     }
 
+    /**
+     * @throws RandomException
+     */
     public static function getDetailsFormSchema(): array
     {
         return [
+
+            Forms\Components\TextInput::make('number')
+                ->default('OR-' . random_int(100000, 999999))
+                ->disabled()
+                ->dehydrated()
+                ->required()
+                ->maxLength(32)
+                ->unique(Order::class, 'number', ignoreRecord: true),
             Select::make('customer_id')
-                ->relationship('customer', 'customer_code')
+                ->relationship('customer.personalInfo', 'first_name')
+                ->reactive()
+                ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+
                 ->required(),
 
             Forms\Components\ToggleButtons::make('status')
@@ -157,9 +176,16 @@ class OrderResource extends Resource
                 ->relationship('paymentMethod', 'method')
                 ->required(),
 
-            Select::make('address')
+            Select::make('address_id')
                 ->relationship('address', 'street_address')
                 ->required(),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            OrderStats::class,
         ];
     }
 

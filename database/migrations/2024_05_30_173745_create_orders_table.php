@@ -12,6 +12,8 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('number', 32)->unique();
+
             $table->foreignId('address_id');
             $table->string('status', 255);
             $table->decimal('total_price', 20, 2)->default('00.00');

@@ -23,7 +23,11 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
+            'number' => 'OR' . $this->faker->unique()->randomNumber(6),
+
             'address_id' => Address::factory(),
+
+
             'total_price' => $this->faker->randomFloat(2, 0, 999.99),
             'status' => $this->faker->randomElement(['processing', 'shipped', 'delivered', 'cancelled']),
             'customer_id' => Customer::factory(),

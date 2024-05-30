@@ -18,6 +18,7 @@ class Order extends Model
      */
     protected $fillable = [
         'address_id',
+        'number',
         'total_price',
         'status',
         'shipping_address_id',
