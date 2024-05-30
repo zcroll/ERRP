@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('address_id');
-            $table->decimal('total_price', 8, 2);
             $table->string('status', 255);
+            $table->decimal('total_price', 20, 2)->default('00.00');
             $table->foreignId('customer_id');
             $table->foreignId('payment_method_id');
             $table->timestamps();
