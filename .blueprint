@@ -11,7 +11,6 @@ created:
     - database/factories/DepartmentFactory.php
     - database/factories/CustomerTypeFactory.php
     - database/factories/CustomerFactory.php
-    - database/factories/OrderStatusFactory.php
     - database/factories/PaymentMethodFactory.php
     - database/factories/OrderFactory.php
     - database/factories/OrderItemFactory.php
@@ -23,30 +22,29 @@ created:
     - database/factories/AccountFactory.php
     - database/factories/FinancialTransactionFactory.php
     - database/factories/StockEntryFactory.php
-    - database/migrations/2024_05_28_145607_create_personal_infos_table.php
-    - database/migrations/2024_05_28_145608_create_addresses_table.php
-    - database/migrations/2024_05_28_145609_create_supplier_types_table.php
-    - database/migrations/2024_05_28_145610_create_vendors_table.php
-    - database/migrations/2024_05_28_145611_create_product_categories_table.php
-    - database/migrations/2024_05_28_145612_create_products_table.php
-    - database/migrations/2024_05_28_145613_create_product_dimensions_table.php
-    - database/migrations/2024_05_28_145614_create_product_suppliers_table.php
-    - database/migrations/2024_05_28_145615_create_employees_table.php
-    - database/migrations/2024_05_28_145616_create_departments_table.php
-    - database/migrations/2024_05_28_145617_create_customer_types_table.php
-    - database/migrations/2024_05_28_145618_create_customers_table.php
-    - database/migrations/2024_05_28_145619_create_order_statuses_table.php
-    - database/migrations/2024_05_28_145620_create_payment_methods_table.php
-    - database/migrations/2024_05_28_145621_create_orders_table.php
-    - database/migrations/2024_05_28_145622_create_order_items_table.php
-    - database/migrations/2024_05_28_145623_create_audit_logs_table.php
-    - database/migrations/2024_05_28_145624_create_product_reviews_table.php
-    - database/migrations/2024_05_28_145625_create_sales_invoices_table.php
-    - database/migrations/2024_05_28_145626_create_purchase_invoices_table.php
-    - database/migrations/2024_05_28_145627_create_payments_table.php
-    - database/migrations/2024_05_28_145628_create_accounts_table.php
-    - database/migrations/2024_05_28_145629_create_financial_transactions_table.php
-    - database/migrations/2024_05_28_145630_create_stock_entries_table.php
+    - database/migrations/2024_05_30_173732_create_personal_infos_table.php
+    - database/migrations/2024_05_30_173733_create_addresses_table.php
+    - database/migrations/2024_05_30_173734_create_supplier_types_table.php
+    - database/migrations/2024_05_30_173735_create_vendors_table.php
+    - database/migrations/2024_05_30_173736_create_product_categories_table.php
+    - database/migrations/2024_05_30_173737_create_products_table.php
+    - database/migrations/2024_05_30_173738_create_product_dimensions_table.php
+    - database/migrations/2024_05_30_173739_create_product_suppliers_table.php
+    - database/migrations/2024_05_30_173740_create_employees_table.php
+    - database/migrations/2024_05_30_173741_create_departments_table.php
+    - database/migrations/2024_05_30_173742_create_customer_types_table.php
+    - database/migrations/2024_05_30_173743_create_customers_table.php
+    - database/migrations/2024_05_30_173744_create_payment_methods_table.php
+    - database/migrations/2024_05_30_173745_create_orders_table.php
+    - database/migrations/2024_05_30_173746_create_order_items_table.php
+    - database/migrations/2024_05_30_173747_create_audit_logs_table.php
+    - database/migrations/2024_05_30_173748_create_product_reviews_table.php
+    - database/migrations/2024_05_30_173749_create_sales_invoices_table.php
+    - database/migrations/2024_05_30_173750_create_purchase_invoices_table.php
+    - database/migrations/2024_05_30_173751_create_payments_table.php
+    - database/migrations/2024_05_30_173752_create_accounts_table.php
+    - database/migrations/2024_05_30_173753_create_financial_transactions_table.php
+    - database/migrations/2024_05_30_173754_create_stock_entries_table.php
     - app/Models/PersonalInfo.php
     - app/Models/Address.php
     - app/Models/SupplierType.php
@@ -59,7 +57,6 @@ created:
     - app/Models/Department.php
     - app/Models/CustomerType.php
     - app/Models/Customer.php
-    - app/Models/OrderStatus.php
     - app/Models/PaymentMethod.php
     - app/Models/Order.php
     - app/Models/OrderItem.php
@@ -88,9 +85,8 @@ models:
     Department: { department_name: 'string:100:index' }
     CustomerType: { type: 'string:255:index' }
     Customer: { customer_code: 'string:50:uniqueCustomers', relationships: { belongsTo: 'CustomerType,Address,PersonalInfo' } }
-    OrderStatus: { status: 'string:255' }
     PaymentMethod: { method: 'string:255' }
-    Order: { shipping_address_id: id, relationships: { belongsTo: 'Customer,OrderStatus,PaymentMethod,Address' } }
+    Order: { address_id: id, total_price: 'decimal:8,2', status: 'string:255', relationships: { belongsTo: 'Customer,PaymentMethod,Address' } }
     OrderItem: { quantity: integer, unit_price: 'decimal:8,2', relationships: { belongsTo: 'Order,Product' } }
     AuditLog: { table_name: 'string:255', action: 'enum:INSERT,UPDATE,DELETE', old_value: string, new_value: string, relationships: { belongsTo: Employee } }
     ProductReview: { rating: integer, relationships: { belongsTo: 'Product,Customer' } }

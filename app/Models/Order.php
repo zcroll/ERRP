@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -16,11 +17,11 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'shipping_address_id',
-        'customer_id',
-        'order_status_id',
-        'payment_method_id',
         'address_id',
+        'total_price',
+        'status',
+        'customer_id',
+        'payment_method_id',
     ];
 
     /**
@@ -30,21 +31,15 @@ class Order extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'shipping_address_id' => 'integer',
-        'customer_id' => 'integer',
-        'order_status_id' => 'integer',
-        'payment_method_id' => 'integer',
         'address_id' => 'integer',
+        'total_price' => 'decimal:2',
+        'customer_id' => 'integer',
+        'payment_method_id' => 'integer',
     ];
 
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
-    }
-
-    public function orderStatus(): BelongsTo
-    {
-        return $this->belongsTo(OrderStatus::class);
     }
 
     public function paymentMethod(): BelongsTo
@@ -57,8 +52,8 @@ class Order extends Model
         return $this->belongsTo(Address::class);
     }
 
-    public function shippingAddress(): BelongsTo
+    public function orderItems(): HasMany
     {
-        return $this->belongsTo(ShippingAddress::class);
+        return $this->hasMany(OrderItem::class);
     }
 }
