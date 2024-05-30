@@ -43,4 +43,24 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function calculateItemTotal(): float
+    {
+        return $this->quantity * $this->product->unit_price;
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function (OrderItem $orderItem) {
+            $orderItem->order->calculateTotal()->save();
+        });
+
+        static::updated(function (OrderItem $orderItem) {
+            $orderItem->order->calculateTotal()->save();
+        });
+
+        static::deleted(function (OrderItem $orderItem) {
+            $orderItem->order->calculateTotal()->save();
+        });
+    }
 }

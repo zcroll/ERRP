@@ -20,6 +20,8 @@ class Order extends Model
         'address_id',
         'total_price',
         'status',
+        'shipping_address_id',
+        'total_amount',
         'customer_id',
         'payment_method_id',
     ];
@@ -32,7 +34,6 @@ class Order extends Model
     protected $casts = [
         'id' => 'integer',
         'address_id' => 'integer',
-        'total_price' => 'decimal:2',
         'customer_id' => 'integer',
         'payment_method_id' => 'integer',
     ];
@@ -52,8 +53,20 @@ class Order extends Model
         return $this->belongsTo(Address::class);
     }
 
+
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function calculateTotal()
+    {
+        $total = $this->orderItems->sum(function ($orderItem) {
+            return $orderItem->quantity * $orderItem->product->unit_price;
+        });
+
+        $this->total_price = $total;
+
+        return $this;
     }
 }
