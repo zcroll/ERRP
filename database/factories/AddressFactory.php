@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Address;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AddressFactory extends Factory
 {
@@ -21,7 +20,7 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'street_address' => $this->faker->regexify('[A-Za-z0-9]{255}'),
+            'street_address' => $this->faker->word(),
             'city' => $this->faker->city(),
             'state' => $this->faker->regexify('[A-Za-z0-9]{255}'),
             'country' => $this->faker->country(),

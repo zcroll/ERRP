@@ -9677,11 +9677,11 @@ a.text-dark:focus, a.text-dark:hover {
 
 .text-break {
     word-wrap: break-word !important;
-    word-break: break-word !important;
+    word-break: break-word !important
 }
 
 .text-reset {
-    color: inherit !important;
+    color: inherit !important
 }
 
 .visible {

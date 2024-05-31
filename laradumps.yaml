@@ -12,7 +12,7 @@ observers:
   enabled_in_testing: false
   dump: false
   original_dump: false
-  queries: true
+  queries: false
   slow_queries: true
   mail: false
   logs: true

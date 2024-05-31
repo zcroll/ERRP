@@ -7,12 +7,13 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
-//use Filament\Pages\Page;
 use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Resources\Pages\Page;
+
+//use Filament\Pages\Page;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
@@ -141,7 +142,8 @@ class ProductResource extends Resource
             ProductResource\Pages\ViewProduct::class,
             ProductResource\Pages\EditProduct::class,
             ProductResource\Pages\ManageProductDimensions::class,
-            ProductResource\Pages\ManageProductSuppliers::class
+            ProductResource\Pages\ManageProductSuppliers::class,
+            ProductResource\Pages\ProductReviews::class
         ]);
     }
     public static function getPages(): array
@@ -151,6 +153,7 @@ class ProductResource extends Resource
             'create' => ProductResource\Pages\CreateProduct::route('/create'),
             'dimension' => ProductResource\Pages\ManageProductDimensions::route('/{record}/demension'),
             'suplier' => ProductResource\Pages\ManageProductSuppliers::route('/{record}/suplier'),
+            'rating' => ProductResource\Pages\ProductReviews::route('/{record}/rating'),
             'index' => ProductResource\Pages\ListProducts::route('/'),
             'view' => ProductResource\Pages\ViewProduct::route('/{record}'),
             'edit' => ProductResource\Pages\EditProduct::route('/{record}/edit'),

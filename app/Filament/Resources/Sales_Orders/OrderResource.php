@@ -75,20 +75,22 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('address.street_address')
-                    ->numeric()
+                    ->words(2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('customer.personalInfo.first_name')
                     ->label('customer'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge(),
-                Tables\Columns\TextColumn::make('paymentMethod.method')
-                    ->numeric()
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('address.street_address')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->numeric()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money(),
+                    ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

@@ -2,14 +2,19 @@
 
 namespace App\Filament\Resources\Sales_Orders;
 
-use App\Filament\Resources\ProductReviewResource\Pages;
-use App\Filament\Resources\ProductReviewResource\RelationManagers;
+use App\Models\Order;
 use App\Models\ProductReview;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use IbrahimBougaoua\FilamentRatingStar\Actions\RatingStar;
+use IbrahimBougaoua\FilamentRatingStar\Columns\RatingStarColumn;
+use Illuminate\Database\Eloquent\Builder;
+use LaravelIdea\Helper\App\Models\_IH_Order_QB;
 
 class ProductReviewResource extends Resource
 {
@@ -22,15 +27,20 @@ class ProductReviewResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('rating')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\Select::make('product_id')
                     ->relationship('product', 'name')
                     ->required(),
-                Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'id')
+                Select::make('customer_id')
+                    ->relationship('customer.personalInfo', 'first_name')
+                    ->reactive()
+                    ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                     ->required(),
+
+                Section::make()
+                    ->schema([
+                        RatingStar::make('rating')
+                            ->label('Rating')
+                    ]),
             ]);
     }
 
@@ -38,13 +48,12 @@ class ProductReviewResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('rating')
-                    ->numeric()
+                RatingStarColumn::make('rating')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('product.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('customer.id')
+                Tables\Columns\TextColumn::make('customer.personalInfo.first_name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -76,6 +85,10 @@ class ProductReviewResource extends Resource
         ];
     }
 
+    public static function getQuery(): Builder|_IH_Order_QB
+    {
+        return Order::with(['customer.personalInfo']);
+    }
     public static function getPages(): array
     {
         return [
