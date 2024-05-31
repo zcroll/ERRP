@@ -28,6 +28,9 @@ class OrderResource extends Resource
     protected static ?int $navigationSort = 1;
 //    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    /**
+     * @throws RandomException
+     */
     public static function form(Form $form): Form
     {
         return $form
@@ -57,6 +60,15 @@ class OrderResource extends Resource
             ])
             ->columns(3);
     }
+
+    public static function getRelations(): array
+    {
+        return [
+            OrderResource\RelationManagers\PaymentsRelationManager::class,
+        ];
+    }
+
+
 
     public static function table(Table $table): Table
     {
@@ -98,13 +110,6 @@ class OrderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getOrderItemsRepeater(): Repeater
@@ -170,6 +175,7 @@ class OrderResource extends Resource
             ->required();
     }
 
+
     /**
      * @throws RandomException
      */
@@ -196,9 +202,6 @@ class OrderResource extends Resource
                 ->options(OrderStatus::class)
                 ->required(),
 
-            Select::make('payment_method_id')
-                ->relationship('paymentMethod', 'method')
-                ->required(),
 
             Select::make('address_id')
                 ->relationship('address', 'street_address')

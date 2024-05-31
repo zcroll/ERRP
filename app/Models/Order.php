@@ -24,7 +24,8 @@ class Order extends Model
         'shipping_address_id',
         'total_amount',
         'customer_id',
-        'payment_method_id',
+        'payment_id'
+
     ];
 
     /**
@@ -44,9 +45,9 @@ class Order extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function paymentMethod(): BelongsTo
+    public function payments(): HasMany
     {
-        return $this->belongsTo(PaymentMethod::class);
+        return $this->hasMany(Payment::class);
     }
 
     public function address(): BelongsTo

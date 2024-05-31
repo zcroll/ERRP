@@ -17,8 +17,9 @@ class Payment extends Model
      */
     protected $fillable = [
         'payment_date',
+        'provider',
+        'method',
         'amount',
-        'payment_method_id',
     ];
 
     /**
@@ -30,10 +31,9 @@ class Payment extends Model
         'id' => 'integer',
         'payment_date' => 'timestamp',
         'amount' => 'decimal:2',
-        'payment_method_id' => 'integer',
     ];
 
-    public function paymentMethod(): BelongsTo
+    public function order(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
     }

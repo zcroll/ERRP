@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->string('status', 255);
             $table->decimal('total_price', 20, 2)->default('00.00');
             $table->foreignId('customer_id');
-            $table->foreignId('payment_method_id');
             $table->timestamps();
         });
     }

@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use App\Models\Order;
 use App\Models\Payment;
-use App\Models\PaymentMethod;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentFactory extends Factory
 {
@@ -22,9 +21,11 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
+            'order_id' => Order::factory(),
             'payment_date' => $this->faker->dateTime(),
-            'amount' => $this->faker->randomFloat(2, 0, 99999999.99),
-            'payment_method_id' => PaymentMethod::factory(),
+            'amount' => $this->faker->randomFloat(2, 100, 2000),
+            'provider' => $this->faker->randomElement(['CIH', 'paypal', 'CHECK']),
+            'method' => $this->faker->randomElement(['credit_card', 'bank_transfer', 'cash']),
         ];
     }
 }
