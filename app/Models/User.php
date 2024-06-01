@@ -94,4 +94,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasDefaul
     {
         return $this->profile_photo_url;
     }
+
+//    public function (): HasMany
+//    {
+//        return $this->hasMany();
+//    }
 }
