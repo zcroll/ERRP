@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Products_Inventory;
 
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
@@ -27,23 +28,107 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('product_code')
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('product_code')
                     ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('unit_price')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_discontinued')
-                    ->required(),
-                Forms\Components\FileUpload::make('image')
-                    ->required(),
-                Forms\Components\Select::make('product_category_id')
-                    ->relationship('productCategory', 'category_name')
-                    ->required(),
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\MarkdownEditor::make('description')
+                            ->required()
+                            ->columnSpanFull(),
+
+
+                    ])
+                    ->columns(2),
+                Forms\Components\Card::make('Status & Category')
+                    ->schema([
+                        Forms\Components\Section::make('Status')
+                            ->schema([
+                                Forms\Components\Toggle::make('is_visible')
+                                    ->label('Visible')
+                                    ->helperText('This product will be hidden from all sales channels.')
+                                    ->default(true),
+
+                                Forms\Components\DatePicker::make('published_at')
+                                    ->label('Availability')
+                                    ->default(now())
+                                    ->required(),
+
+
+                                Forms\Components\Select::make('product_category_id')
+                                    ->relationship('productCategory', 'category_name')
+                                    ->required(),
+                            ])->columns(2),
+                    ])->collapsed(),
+                forms\Components\Section::make('Images')
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('image')
+                            ->multiple()
+                            ->maxFiles(5)
+                            ->disableLabel(),
+                    ])
+                    ->collapsible(),
+
+                Forms\Components\Section::make('Pricing')
+                    ->schema([
+                        Forms\Components\TextInput::make('unit_price')
+                            ->numeric()
+                            ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
+                            ->required(),
+
+                        Forms\Components\TextInput::make('old_price')
+                            ->label('Compare at price')
+                            ->numeric()
+                            ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
+                            ->required(),
+
+                        Forms\Components\TextInput::make('cost')
+                            ->label('Cost per item')
+                            ->helperText('Customers won\'t see this price.')
+                            ->numeric()
+                            ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->collapsed(),
+
+                Forms\Components\Section::make('Inventory')
+                    ->schema([
+                        Forms\Components\TextInput::make('sku')
+                            ->label('SKU (Stock Keeping Unit)')
+                            ->unique(Product::class, 'sku', ignoreRecord: true)
+                            ->required(),
+
+                        Forms\Components\TextInput::make('barcode')
+                            ->label('Barcode (ISBN, UPC, GTIN, etc.)')
+                            ->unique(Product::class, 'barcode', ignoreRecord: true)
+                            ->required(),
+
+                        Forms\Components\TextInput::make('qty')
+                            ->label('Quantity')
+                            ->numeric()
+                            ->rules(['integer', 'min:0'])
+                            ->required(),
+
+                        Forms\Components\TextInput::make('security_stock')
+                            ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
+                            ->numeric()
+                            ->rules(['integer', 'min:0'])
+                            ->required(),
+                    ])
+                    ->collapsed()
+                    ->columns(2),
+                Forms\Components\Section::make('Shipping')
+                    ->schema([
+                        Forms\Components\Checkbox::make('backorder')
+                            ->label('This product can be returned'),
+
+                        Forms\Components\Checkbox::make('requires_shipping')
+                            ->label('This product will be shipped'),
+                    ])
+                    ->collapsed()
+                    ->columns(2),
             ]);
 
     }
@@ -52,18 +137,53 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product_code')
-                    ->searchable(),
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
+                    ->label('Image')
+                    ->collection('product-images'),
+
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('unit_price')
-                    ->numeric()
+                    ->label('Name')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_discontinued')
-                    ->boolean(),
+
+                Tables\Columns\TextColumn::make('unit_price')
+                    ->label('Price')
+                    ->searchable()
+                    ->sortable(),
+
+
+                Tables\Columns\TextColumn::make('sku')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('productCategory.category_name')
                     ->numeric()
+                    ->badge()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('qty')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('security_stock')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+
+                Tables\Columns\BooleanColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('published_at')
+                    ->label('Publish Date')
+                    ->date()
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

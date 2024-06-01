@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->json('dimensions');
             $table->decimal('weight', 8, 2);
             $table->string('weight_unit', 20);
+
             $table->foreignId('product_id');
             $table->timestamps();
         });

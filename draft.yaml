@@ -127,9 +127,3 @@ models:
     type: enum:DEBIT,CREDIT:index
     relationships:
       belongsTo: Payment,Account
-
-  StockEntry:
-    entry_date: timestamp
-    type: enum:STOCK_IN, STOCK_OUT:index
-    relationships:
-      belongsTo: Product

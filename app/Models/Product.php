@@ -7,9 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
+    // add this line
+
     use HasFactory;
 
     /**
@@ -25,6 +31,7 @@ class Product extends Model
         'unit_price',
         'is_discontinued',
         'product_category_id',
+        'cost'
     ];
 
     /**

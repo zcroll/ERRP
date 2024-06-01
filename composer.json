@@ -10,6 +10,7 @@
         "arrilot/laravel-widgets": "^3.14",
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
+        "filament/spatie-laravel-media-library-plugin": "^3.2",
         "flowframe/laravel-trend": "*",
         "ibrahimbougaoua/filament-rating-star": "^1.0",
         "itsgoingd/clockwork": "^5.2",

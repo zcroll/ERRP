@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\OrderStatusChangedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -70,5 +71,13 @@ class Order extends Model
         $this->total_price = $total;
 
         return $this;
+    }
+
+    public function setStatus(string $status)
+    {
+        $this->status = $status;
+        $this->save();
+
+        event(new OrderStatusChangedEvent($this));
     }
 }

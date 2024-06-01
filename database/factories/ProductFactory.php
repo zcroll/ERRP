@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class ProductFactory extends Factory
 {
@@ -23,12 +23,32 @@ class ProductFactory extends Factory
     {
         return [
             'product_code' => $this->faker->regexify('[A-Za-z0-9]{50}'),
-            'name' => $this->faker->name(),
             'image' => $this->faker->regexify('[A-Za-z0-9]{500}'),
-            'description' => $this->faker->text(),
-            'unit_price' => $this->faker->randomFloat(2, 0, 99999999.99),
             'is_discontinued' => $this->faker->boolean(),
+            'backorder' => $this->faker->boolean(),
+            'requires_shipping' => $this->faker->boolean(),
+
+
+            'name' => $name = $this->faker->unique()->catchPhrase(),
+            'slug' => Str::slug($name),
+            'sku' => $this->faker->unique()->ean8(),
+            'barcode' => $this->faker->ean13(),
+            'description' => $this->faker->realText(),
+            'qty' => $this->faker->randomDigitNotNull(),
+            'security_stock' => $this->faker->randomDigitNotNull(),
+            'featured' => $this->faker->boolean(),
+            'is_visible' => $this->faker->boolean(),
+            'old_price' => $this->faker->randomFloat(2, 100, 500),
+            'unit_price' => $this->faker->randomFloat(2, 80, 400),
+            'cost' => $this->faker->randomFloat(2, 50, 200),
+            'type' => $this->faker->randomElement(['deliverable', 'downloadable']),
+            'published_at' => $this->faker->dateTimeBetween('-1 year', '+1 year'),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
+            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
+
+
             'product_category_id' => ProductCategory::factory(),
         ];
+
     }
 }

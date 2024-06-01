@@ -21,6 +21,8 @@ class SalesInvoice extends Model
         'total_amount',
         'status',
         'order_id',
+        'total_earnings',
+        'total_losses',
     ];
 
     /**
@@ -39,4 +41,27 @@ class SalesInvoice extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+
+    public function calculateEarningsAndLosses()
+    {
+        $earnings = 0;
+        $losses = 0;
+
+        $order = $this->order;
+
+
+        foreach ($order as $item) {
+            if ($item->status === 'delivered') {
+                $earnings += ($item->unit_price - $item->product->cost) * $item->qty;
+            } elseif ($item->status === 'returned') {
+                $losses += $item->product->cost * $item->quantity;
+            }
+        }
+
+        $this->total_earnings = $earnings;
+        $this->total_losses = $losses;
+        $this->save();
+    }
+
 }

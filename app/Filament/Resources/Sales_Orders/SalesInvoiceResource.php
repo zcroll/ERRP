@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Sales_Orders;
 
-use App\Filament\Resources\SalesInvoiceResource\Pages;
-use App\Filament\Resources\SalesInvoiceResource\RelationManagers;
 use App\Models\SalesInvoice;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -50,6 +48,11 @@ class SalesInvoiceResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('total_earnings')
+                    ->searchable(), Tables\Columns\TextColumn::make('total_losses')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('total_earnings')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('order.id')
                     ->numeric()
