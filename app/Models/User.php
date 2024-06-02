@@ -3,28 +3,13 @@
 namespace App\Models;
 
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasAvatar;
-use Filament\Models\Contracts\HasDefaultTenant;
-use Filament\Models\Contracts\HasTenants;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
-use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Wallo\FilamentCompanies\HasCompanies;
-use Wallo\FilamentCompanies\HasProfilePhoto;
 
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasDefaultTenant, HasTenants
+class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasCompanies;
     use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
     use HasRoles;
     use HasPanelShield;
     /**
@@ -53,9 +38,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasDefaul
      *
      * @var array<int, string>
      */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+
 
     /**
      * Get the attributes that should be cast.
@@ -70,33 +53,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasDefaul
         ];
     }
 
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return true;
-    }
 
-    public function canAccessTenant(Model $tenant): bool
-    {
-        return $this->belongsToCompany($tenant);
-    }
 
-    public function getTenants(Panel $panel): array | Collection
-    {
-        return $this->allCompanies();
-    }
 
-    public function getDefaultTenant(Panel $panel): ?Model
-    {
-        return $this->currentCompany;
-    }
 
-    public function getFilamentAvatarUrl(): string
-    {
-        return $this->profile_photo_url;
-    }
 
-//    public function (): HasMany
-//    {
-//        return $this->hasMany();
-//    }
 }

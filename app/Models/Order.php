@@ -41,6 +41,18 @@ class Order extends Model
         'payment_method_id' => 'integer',
     ];
 
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updated(function (Order $order) {
+            if ($order->status == 'shipped' || $order->status == 'returned') {
+                $order->calculateEarningsAndLosses();
+            }
+        });
+    }
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
@@ -72,6 +84,49 @@ class Order extends Model
 
         return $this;
     }
+
+    public function calculateEarningsAndLosses(): void
+    {
+        if ($this->status == 'shipped') {
+            $earnings = 0;
+            $losses = 0;
+
+            foreach ($this->orderItems as $orderItem) {
+                $product = $orderItem->product;
+                $unitPrice = $product->unit_price;
+                $cost = $product->cost;
+                $quantity = $orderItem->quantity;
+
+                $earnings += ($unitPrice - $cost) * $quantity;
+
+            }
+
+            $earningsLosses = new EarningsLosses();
+            $earningsLosses->order_id = $this->id;
+            $earningsLosses->earnings = $earnings;
+            $earningsLosses->losses = 0;
+
+            $earningsLosses->save();
+        } elseif ($this->status == 'returned') {
+            $losses = 0;
+
+            foreach ($this->orderItems as $orderItem) {
+                $product = $orderItem->product;
+                $cost = $product->cost;
+                $quantity = $orderItem->quantity;
+
+                $losses += $cost * $quantity;
+            }
+
+            $earningsLosses = new EarningsLosses();
+            $earningsLosses->order_id = $this->id;
+            $earningsLosses->earnings = 0;
+            $earningsLosses->losses = $losses;
+            $earningsLosses->save();
+        }
+    }
+
+
 
     public function setStatus(string $status)
     {

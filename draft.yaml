@@ -79,7 +79,6 @@ models:
 
   OrderItem:
     quantity: integer
-    unit_price: decimal:8,2
     relationships:
       belongsTo: Order,Product
 
@@ -99,7 +98,8 @@ models:
   SalesInvoice:
     invoice_date: timestamp
     invoice_number: string
-    total_amount: decimal:10,2:index
+    total_losses: decimal:10,2:index
+    total_earnings: decimal:10,2:index
     status: string:255:index
     relationships:
       belongsTo: Order

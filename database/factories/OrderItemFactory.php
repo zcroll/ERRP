@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderItemFactory extends Factory
 {
@@ -23,7 +22,7 @@ class OrderItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'quantity' => $this->faker->numberBetween(-10000, 10000),
+            'quantity' => $this->faker->numberBetween(0, 100),
             'unit_price' => $this->faker->randomFloat(2, 0, 999999.99),
             'order_id' => Order::factory(),
             'product_id' => Product::factory(),

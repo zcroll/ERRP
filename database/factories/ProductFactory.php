@@ -21,6 +21,7 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+
         return [
             'product_code' => $this->faker->regexify('[A-Za-z0-9]{50}'),
             'image' => $this->faker->regexify('[A-Za-z0-9]{500}'),

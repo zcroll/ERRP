@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use LaravelIdea\Helper\App\Models\_IH_Order_QB;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use Random\RandomException;
 
 class OrderResource extends Resource
@@ -106,11 +107,13 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+                ExportBulkAction::make()
             ]);
     }
 
@@ -221,6 +224,13 @@ class OrderResource extends Resource
     public static function getQuery(): Builder|_IH_Order_QB
     {
         return Order::with(['customer.personalInfo']);
+    }
+
+    public function getTableBulkActions()
+    {
+        return [
+            ExportBulkAction::make()
+        ];
     }
     public static function getPages(): array
     {

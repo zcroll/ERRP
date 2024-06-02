@@ -28,7 +28,7 @@ class OrderFactory extends Factory
 
 
             'total_price' => $this->faker->randomFloat(2, 0, 999.99),
-            'status' => $this->faker->randomElement(['processing', 'shipped', 'delivered', 'cancelled']),
+            'status' => $this->faker->randomElement(['processing', 'shipped', 'delivered', 'returned']),
             'customer_id' => Customer::factory(),
         ];
     }
