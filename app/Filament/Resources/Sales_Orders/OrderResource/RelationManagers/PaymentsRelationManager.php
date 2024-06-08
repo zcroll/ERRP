@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\Sales_Orders\OrderResource\RelationManagers;
 
+use App\Enums\PaymentMethod;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -17,20 +21,18 @@ class PaymentsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
+
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('reference')
                     ->columnSpan('full')
                     ->required(),
 
-                Forms\Components\TextInput::make('amount')
-                    ->numeric()
-                    ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
-                    ->required(),
+
 
                 Forms\Components\DatePicker::make('payment_date')
                     ->required(),
-
 
                 Forms\Components\ToggleButtons::make('provider')
                     ->inline()
@@ -42,16 +44,27 @@ class PaymentsRelationManager extends RelationManager
                     ])
                     ->required(),
 
-                Forms\Components\ToggleButtons::make('method')
+                Forms\Components\ToggleButtons::make('calculate the price')
                     ->inline()
-                    ->options([
-                        'credit_card' => 'Credit card',
-                        'bank_transfer' => 'Bank transfer',
-                        'cash' => 'Cash',
-                    ])
+                    ->options(Order::query()->pluck('type', 'id'))
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('amount', Order::find($state)?->total_price ?? 0 ))
+                    ->distinct()
+                    ->live(),
+
+
+                Forms\Components\ToggleButtons::make('method')
+                        ->options(PaymentMethod::class)
+                         ->inline()
+
+
                     ->required(),
+                Forms\Components\TextInput::make('amount')
+                    ->numeric()
+                ->required()
             ])->columns(2);
     }
+
 
     public function table(Table $table): Table
     {

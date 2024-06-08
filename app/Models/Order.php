@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderType;
 use App\Events\OrderStatusChangedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,10 @@ class Order extends Model
         'shipping_address_id',
         'total_amount',
         'customer_id',
-        'payment_id'
+        'payment_id',
+        'vendor_id',
+        'type',
+
 
     ];
 
@@ -38,7 +42,9 @@ class Order extends Model
         'id' => 'integer',
         'address_id' => 'integer',
         'customer_id' => 'integer',
+        'vendor_id' => 'integer',
         'payment_method_id' => 'integer',
+//        'type' => OrderType::class
     ];
 
 
@@ -47,7 +53,7 @@ class Order extends Model
         parent::boot();
 
         static::updated(function (Order $order) {
-            if ($order->status == 'shipped' || $order->status == 'returned') {
+            if ($order->status === 'shipped' || $order->status === 'returned') {
                 $order->calculateEarningsAndLosses();
             }
         });
@@ -56,6 +62,10 @@ class Order extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class);
     }
 
     public function payments(): HasMany
@@ -87,7 +97,7 @@ class Order extends Model
 
     public function calculateEarningsAndLosses(): void
     {
-        if ($this->status == 'shipped') {
+        if ($this->status === 'shipped') {
             $earnings = 0;
             $losses = 0;
 
@@ -107,7 +117,7 @@ class Order extends Model
             $earningsLosses->losses = 0;
 
             $earningsLosses->save();
-        } elseif ($this->status == 'returned') {
+        } elseif ($this->status === 'returned') {
             $losses = 0;
 
             foreach ($this->orderItems as $orderItem) {
@@ -128,11 +138,15 @@ class Order extends Model
 
 
 
-    public function setStatus(string $status)
+    public function getCustomerAndVendorAttribute(): string
     {
-        $this->status = $status;
-        $this->save();
-
-        event(new OrderStatusChangedEvent($this));
+        $customerName = $this->customer->personalInfo?->first_name ?? " ";
+        $vendorName = $this->vendor?->business_name ?? " ";
+         ds($customerName , $vendorName);
+        return $customerName && $vendorName
+            ? $customerName .''. $vendorName
+            : '-';
     }
+
+
 }

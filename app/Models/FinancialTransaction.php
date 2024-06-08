@@ -19,7 +19,7 @@ class FinancialTransaction extends Model
         'transaction_date',
         'type',
         'payment_id',
-        'account_id',
+        'rip',
     ];
 
     /**

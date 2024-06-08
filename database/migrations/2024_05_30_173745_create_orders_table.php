@@ -14,10 +14,12 @@ return new class extends Migration {
             $table->id();
             $table->string('number', 32)->unique();
 
-            $table->foreignId('address_id');
+            $table->foreignId('address_id')->nullable();
             $table->string('status', 255);
+            $table->string('type',255 );
             $table->decimal('total_price', 20, 2)->default('00.00');
-            $table->foreignId('customer_id');
+            $table->foreignId('customer_id')->nullable();
+            $table->foreignId('vendor_id')->nullable();
             $table->timestamps();
         });
     }

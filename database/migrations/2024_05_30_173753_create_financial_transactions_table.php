@@ -13,9 +13,8 @@ return new class extends Migration {
         Schema::create('financial_transactions', function (Blueprint $table) {
             $table->id();
             $table->timestamp('transaction_date');
-            $table->enum('type', ["DEBIT", "CREDIT"]);
+            $table->string('rip');
             $table->foreignId('payment_id');
-            $table->foreignId('account_id');
             $table->timestamps();
         });
     }

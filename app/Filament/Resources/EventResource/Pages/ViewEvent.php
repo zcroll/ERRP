@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\USER_AND_ROLE\EventResource\Pages;
+namespace App\Filament\Resources\EventResource\Pages;
 
-use App\Filament\Resources\USER_AND_ROLE\EventResource;
+use App\Filament\Resources\EventResource;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewEvent extends ViewRecord

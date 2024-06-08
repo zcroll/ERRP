@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('order_id');
 
             $table->timestamp('payment_date');
-            $table->decimal('amount');
+            $table->decimal('amount')->default(0);
             $table->string('method');
             $table->string('provider');
             $table->timestamps();

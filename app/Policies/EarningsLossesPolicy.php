@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\EarningsLosses;
 use App\Models\User;
+use App\Models\EarningsLosses;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class EarningsLossesPolicy

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Sales_Orders;
 
 use App\Enums\OrderStatus;
+use App\Enums\OrderType;
 use App\Filament\Resources\Products_Inventory\ProductResource;
 use App\Filament\Resources\Sales_Orders\OrderResource\Widgets\OrderStats;
 use App\Models\Order;
@@ -12,7 +13,9 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -77,9 +80,11 @@ class OrderResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('address.street_address')
                     ->words(2)
+
                     ->sortable(),
-                Tables\Columns\TextColumn::make('customer.personalInfo.first_name')
-                    ->label('customer'),
+                Tables\Columns\TextColumn::make('customer_and_vendor')
+                    ->label('Customer | Vendor')
+                    ->getStateUsing(fn ($record) => $record->getCustomerAndVendorAttribute()),
                 Tables\Columns\TextColumn::make('status')
                     ->badge(),
 
@@ -195,22 +200,39 @@ class OrderResource extends Resource
                 ->required()
                 ->maxLength(32)
                 ->unique(Order::class, 'number', ignoreRecord: true),
+            ToggleButtons::make('type')
+                ->inline()
+                ->options(OrderType::class)
+                ->live()
+                ->required(),
+
             Select::make('customer_id')
                 ->relationship('customer.personalInfo', 'first_name')
                 ->reactive()
+                ->live()
                 ->disableOptionsWhenSelectedInSiblingRepeaterItems()
-
+                ->hidden(fn(Get $get): bool => $get('type') !== 'sale')
                 ->required(),
 
-            Forms\Components\ToggleButtons::make('status')
-                ->inline()
-                ->options(OrderStatus::class)
+            Select::make('vendor_id')
+                ->relationship('vendor', 'business_name')
+//                ->reactive()
+//                ->live()
+//                ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                ->hidden(fn(Get $get): bool => $get('type') !== 'purchase')
                 ->required(),
 
 
             Select::make('address_id')
                 ->relationship('address', 'street_address')
+
                 ->required(),
+            ToggleButtons::make('status')
+                ->inline()
+                ->options(OrderStatus::class)
+                ->live()
+                ->required()
+
         ];
     }
 
@@ -223,7 +245,7 @@ class OrderResource extends Resource
 
     public static function getQuery(): Builder|_IH_Order_QB
     {
-        return Order::with(['customer.personalInfo']);
+        return Order::with(['customer.personalInfo', 'vendor.personalInfo']);
     }
 
     public function getTableBulkActions()

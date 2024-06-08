@@ -42,16 +42,16 @@ class Vendor extends Model
         return $this->belongsTo(SupplierType::class);
     }
 
-    public function supplierRating(): BelongsTo
-    {
-        return $this->belongsTo(SupplierRating::class);
-    }
+
 
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
     }
-
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     public function personalInfo(): BelongsTo
     {
         return $this->belongsTo(PersonalInfo::class);

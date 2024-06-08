@@ -22,16 +22,13 @@ class FinancialTransactionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\DateTimePicker::make('transaction_date')
-                    ->required(),
-                Forms\Components\TextInput::make('type')
-                    ->required(),
+                Forms\Components\DateTimePicker::make('transaction_date'),
+
                 Forms\Components\Select::make('payment_id')
-                    ->relationship('payment', 'id')
+                    ->relationship('payment', 'amount')
                     ->required(),
-                Forms\Components\Select::make('account_id')
-                    ->relationship('account', 'name')
-                    ->required(),
+                Forms\Components\TextInput::make('rip')
+
             ]);
     }
 
@@ -47,7 +44,7 @@ class FinancialTransactionResource extends Resource
                 Tables\Columns\TextColumn::make('payment.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('account.name')
+                Tables\Columns\TextColumn::make('rip')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

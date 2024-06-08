@@ -28,23 +28,23 @@
     opacity: 0;
 }
 
-.ratings .stars input[type=radio].star-5:checked ~ span {
+.ratings .stars input[type=radio].star-5:checked~span {
     width: 100%;
 }
 
-.ratings .stars input[type=radio].star-4:checked ~ span {
+.ratings .stars input[type=radio].star-4:checked~span {
     width: 80%;
 }
 
-.ratings .stars input[type=radio].star-3:checked ~ span {
+.ratings .stars input[type=radio].star-3:checked~span {
     width: 60%;
 }
 
-.ratings .stars input[type=radio].star-2:checked ~ span {
+.ratings .stars input[type=radio].star-2:checked~span {
     width: 40%;
 }
 
-.ratings .stars input[type=radio].star-1:checked ~ span {
+.ratings .stars input[type=radio].star-1:checked~span {
     width: 20%;
 }
 
@@ -62,27 +62,27 @@
     cursor: pointer;
 }
 
-.ratings .stars label:hover ~ span {
+.ratings .stars label:hover~span {
     background-position: 0 -30px;
 }
 
-.ratings .stars label.star-5:hover ~ span {
+.ratings .stars label.star-5:hover~span {
     width: 100% !important;
 }
 
-.ratings .stars label.star-4:hover ~ span {
+.ratings .stars label.star-4:hover~span {
     width: 80% !important;
 }
 
-.ratings .stars label.star-3:hover ~ span {
+.ratings .stars label.star-3:hover~span {
     width: 60% !important;
 }
 
-.ratings .stars label.star-2:hover ~ span {
+.ratings .stars label.star-2:hover~span {
     width: 40% !important;
 }
 
-.ratings .stars label.star-2:hover ~ span {
+.ratings .stars label.star-2:hover~span {
     width: 20% !important;
 }
 

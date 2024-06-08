@@ -18,8 +18,8 @@ class Payment extends Model
     protected $fillable = [
         'payment_date',
         'provider',
-        'method',
         'amount',
+        'method'
     ];
 
     /**
@@ -31,6 +31,8 @@ class Payment extends Model
         'id' => 'integer',
         'payment_date' => 'timestamp',
         'amount' => 'decimal:2',
+//        'method' => \App\Enums\PaymentMethod::class,
+
     ];
 
     public function order(): BelongsTo

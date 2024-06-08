@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('supplier_type_id');
             $table->foreignId('supplier_rating_id');
             $table->foreignId('address_id');
-            $table->foreignId('personal_info_id');
+            $table->foreignId('personal_info_id')->nullable();
             $table->timestamps();
         });
     }
