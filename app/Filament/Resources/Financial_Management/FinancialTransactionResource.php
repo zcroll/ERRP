@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Financial_Management;
 
+use Andreia\FilamentStripePaymentLink\Forms\Actions\GenerateStripeLinkAction;
 use App\Filament\Resources\FinancialTransactionResource\Pages;
 use App\Filament\Resources\FinancialTransactionResource\RelationManagers;
 use App\Models\FinancialTransaction;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,9 +29,12 @@ class FinancialTransactionResource extends Resource
                 Forms\Components\Select::make('payment_id')
                     ->relationship('payment', 'amount')
                     ->required(),
-                Forms\Components\TextInput::make('rip')
+                Forms\Components\TextInput::make('rip'),
 
-            ]);
+                TextInput::make('stripe_payment_link')
+                    ->required()
+                    ->suffixAction(GenerateStripeLinkAction::make('stripe_payment_link')),
+        ]);
     }
 
     public static function table(Table $table): Table

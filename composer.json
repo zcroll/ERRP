@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "andreia/filament-stripe-payment-link": "^1.0",
         "arrilot/laravel-widgets": "^3.14",
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",

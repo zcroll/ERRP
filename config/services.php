@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'stripe' => [
+        'payment-link-key' => env('STRIPE_PAYMENT_LINK_KEY')
+    ],
 
 ];
