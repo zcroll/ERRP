@@ -17,6 +17,7 @@ class Payment extends Model
      */
     protected $fillable = [
         'payment_date',
+        'vendor_id',
         'provider',
         'amount',
         'method'
@@ -39,4 +40,13 @@ class Payment extends Model
     {
         return $this->belongsTo(PaymentMethod::class);
     }
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
 }

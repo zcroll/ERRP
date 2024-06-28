@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Log;
+
 
 class Order extends Model
 {
     use HasFactory;
+
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +24,6 @@ class Order extends Model
     protected $fillable = [
         'address_id',
         'number',
-        'total_price',
         'status',
         'shipping_address_id',
         'total_amount',
@@ -46,18 +48,11 @@ class Order extends Model
         'payment_method_id' => 'integer',
 //        'type' => OrderType::class
     ];
+    /**
+     * @var mixed|string
+     */
 
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::updated(function (Order $order) {
-            if ($order->status === 'shipped' || $order->status === 'returned') {
-                $order->calculateEarningsAndLosses();
-            }
-        });
-    }
 
     public function customer(): BelongsTo
     {
@@ -84,65 +79,73 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function calculateTotal()
+    public function calculateTotal(): static
     {
         $total = $this->orderItems->sum(function ($orderItem) {
             return $orderItem->quantity * $orderItem->product->unit_price;
         });
 
         $this->total_price = $total;
-
         return $this;
     }
 
-    public function calculateEarningsAndLosses(): void
+
+
+    public function calculateEarningsAndLosses()
     {
-        if ($this->status === 'shipped') {
-            $earnings = 0;
-            $losses = 0;
+        Log::info('calculateEarningsAndLosses called for Order ID: ' . $this->id);
 
-            foreach ($this->orderItems as $orderItem) {
-                $product = $orderItem->product;
-                $unitPrice = $product->unit_price;
-                $cost = $product->cost;
-                $quantity = $orderItem->quantity;
+        $earnings = 0;
+        $losses = 0;
 
-                $earnings += ($unitPrice - $cost) * $quantity;
+        Log::info('Current Order Status: ' . $this->status);
 
-            }
-
-            $earningsLosses = new EarningsLosses();
-            $earningsLosses->order_id = $this->id;
-            $earningsLosses->earnings = $earnings;
-            $earningsLosses->losses = 0;
-
-            $earningsLosses->save();
+        if ($this->status === 'delivered') {
+            $earnings = $this->total_price * 0.1;
         } elseif ($this->status === 'returned') {
-            $losses = 0;
-
-            foreach ($this->orderItems as $orderItem) {
-                $product = $orderItem->product;
-                $cost = $product->cost;
-                $quantity = $orderItem->quantity;
-
-                $losses += $cost * $quantity;
-            }
-
-            $earningsLosses = new EarningsLosses();
-            $earningsLosses->order_id = $this->id;
-            $earningsLosses->earnings = 0;
-            $earningsLosses->losses = $losses;
-            $earningsLosses->save();
+            $losses = $this->total_price * 0.05;
         }
+
+        Log::info('Earnings: ' . $earnings . ', Losses: ' . $losses);
+//ds();
+        $record = EarningsLosses::updateOrCreate(
+            ['order_id' => $this->id],
+            [
+                'earnings' => $earnings,
+                'losses' => $losses,
+                'final_cost' =>$earnings-$losses
+            ]
+        );
+
+        Log::info('EarningsLosses record updated/created: ' . $record->toJson());
     }
 
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::updated(function (Order $order) {
+            Log::info('Order updated with ID: ' . $order->id . ' and status: ' . ($order->status ?? 'null'));
+            if (in_array($order->status, ['delivered', 'returned'])) {
+                $order->calculateEarningsAndLosses();
+            }
+        });
+
+        static::created(function (Order $order) {
+            Log::info('Order created with ID: ' . $order->id . ' and status: ' . ($order->status ?? 'null'));
+            if (in_array($order->status, ['delivered', 'returned'])) {
+                $order->calculateEarningsAndLosses();
+            }
+        });
+    }
 
 
     public function getCustomerAndVendorAttribute(): string
     {
         $customerName = $this->customer->personalInfo?->first_name ?? " ";
         $vendorName = $this->vendor?->business_name ?? " ";
-         ds($customerName , $vendorName);
+//         ds($customerName , $vendorName);
         return $customerName && $vendorName
             ? $customerName .''. $vendorName
             : '-';

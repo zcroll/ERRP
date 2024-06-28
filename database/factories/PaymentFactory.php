@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentFactory extends Factory
@@ -22,6 +23,8 @@ class PaymentFactory extends Factory
     {
         return [
             'order_id' => Order::factory(),
+            'vendor_id' => Vendor::factory(),
+            'customer_id' => Vendor::factory(),
             'payment_date' => $this->faker->dateTime(),
             'amount' => $this->faker->randomFloat(2, 100, 2000),
             'provider' => $this->faker->randomElement(['CIH', 'paypal', 'CHECK']),

@@ -19,7 +19,7 @@ class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Start;
-
+    protected static ?string $navigationGroup = 'User Management ' ;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

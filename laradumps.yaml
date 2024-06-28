@@ -22,7 +22,7 @@ observers:
     scheduled_commands: false
     gate: false
 logs:
-    info: false
+    info: true
     warning: false
     emergency: false
     alert: false

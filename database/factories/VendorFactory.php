@@ -28,7 +28,7 @@ class VendorFactory extends Factory
             'vendor_code' => $this->faker->word(),
             'business_name' => $this->faker->regexify('[A-Za-z0-9]{100}'),
             'supplier_type_id' => SupplierType::factory(),
-            'supplier_rating_id' => Vendor::factory(),
+            'supplier_rating_id' => $this->faker->numberBetween(1, 5),
             'address_id' => Address::factory(),
             'personal_info_id' => PersonalInfo::factory(),
         ];

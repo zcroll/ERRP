@@ -32,6 +32,8 @@ class OrderFactory extends Factory
             'type' => $this->faker->randomElement(['sale', 'purchase']),
             'customer_id' => Customer::factory(),
             'vendor_id' => Vendor::factory(),
+            'created_at' => $this->faker->dateTimeBetween('-5 year', 'now'),
+
         ];
     }
 }

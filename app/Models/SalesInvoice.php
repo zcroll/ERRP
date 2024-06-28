@@ -24,7 +24,6 @@ class SalesInvoice extends Model
         'total_earnings',
         'total_losses',
     ];
-
     /**
      * The attributes that should be cast to native types.
      *

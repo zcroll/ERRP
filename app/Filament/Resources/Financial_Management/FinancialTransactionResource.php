@@ -6,12 +6,16 @@ use Andreia\FilamentStripePaymentLink\Forms\Actions\GenerateStripeLinkAction;
 use App\Filament\Resources\FinancialTransactionResource\Pages;
 use App\Filament\Resources\FinancialTransactionResource\RelationManagers;
 use App\Models\FinancialTransaction;
+use App\Models\Order;
+use App\Models\Payment;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use LaravelIdea\Helper\App\Models\_IH_Order_QB;
 
 class FinancialTransactionResource extends Resource
 {
@@ -26,10 +30,14 @@ class FinancialTransactionResource extends Resource
             ->schema([
                 Forms\Components\DateTimePicker::make('transaction_date'),
 
-                Forms\Components\Select::make('payment_id')
-                    ->relationship('payment', 'amount')
-                    ->required(),
-                Forms\Components\TextInput::make('rip'),
+                Forms\Components\Select::make('vendor_id')
+                    ->relationship('payment.vendor', 'business_name')
+                ->label('vedor')
+//                    ->required(),
+        ,
+                Forms\Components\TextInput::make('rip')
+
+                ->required(),
 
                 TextInput::make('stripe_payment_link')
                     ->required()
@@ -44,12 +52,11 @@ class FinancialTransactionResource extends Resource
                 Tables\Columns\TextColumn::make('transaction_date')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('payment.id')
+
+                Tables\Columns\TextColumn::make('payment.vendor.business_name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('rip')
+                Tables\Columns\TextColumn::make('total_amount')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -80,6 +87,11 @@ class FinancialTransactionResource extends Resource
             //
         ];
     }
+    public static function getQuery(): Builder|_IH_Order_QB
+    {
+        return Payment::with([ 'vendor.personalInfo']);
+    }
+
 
     public static function getPages(): array
     {

@@ -42,19 +42,18 @@ class EarningsLossesResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('earnings')
+
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('losses')
+
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('final_cost')
                     ->summarize([
                         Tables\Columns\Summarizers\Sum::make()
                             ->money(),
                     ])
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('losses')
-                    ->summarize([
-                        Tables\Columns\Summarizers\Sum::make()
-                            ->money('EUR'),
-                    ])
-                    ->numeric(),
-                Tables\Columns\TextColumn::make('total')
+//                ->numeric()
 
             ])
             ->filters([

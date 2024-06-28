@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->decimal('earnings', 10, 2);
             $table->decimal('losses', 10, 2);
+            $table->decimal('final_cost',  )->nullable();
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders');

@@ -7,6 +7,10 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -21,50 +25,57 @@ class PaymentsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-
-
         return $form
             ->schema([
-                Forms\Components\TextInput::make('reference')
-                    ->columnSpan('full')
+
+
+                DatePicker::make('payment_date')
                     ->required(),
 
-
-
-                Forms\Components\DatePicker::make('payment_date')
+                Select::make('vendor_id')
+                    ->relationship('vendor', 'business_name')
                     ->required(),
 
-                Forms\Components\ToggleButtons::make('provider')
+                ToggleButtons::make('provider')
                     ->inline()
                     ->grouped()
                     ->options([
                         'CIH' => 'CIH',
                         'paypal' => 'PayPal',
-                        'CHECK' => 'Check',
+                        'Stripe' => 'STRIPE',
                     ])
+                    ->reactive()
                     ->required(),
 
-                Forms\Components\ToggleButtons::make('calculate the price')
+                ToggleButtons::make('calculate the total amount')
                     ->inline()
-                    ->options(Order::query()->pluck('type', 'id'))
+                    ->options(Order::query()->pluck('type', 'id')->map(fn ($value) => 'calculate 🖩')->take(1))
                     ->reactive()
-                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('amount', Order::find($state)?->total_price ?? 0 ))
+                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('amount', Order::find($state)?->total_price ?? 0))
                     ->distinct()
                     ->live(),
 
-
-                Forms\Components\ToggleButtons::make('method')
-                        ->options(PaymentMethod::class)
-                         ->inline()
-
-
+                ToggleButtons::make('method')
+                    ->options(fn (callable $get) => $this->getPaymentMethods($get('provider')))
+                    ->reactive()
                     ->required(),
-                Forms\Components\TextInput::make('amount')
+
+                TextInput::make('amount')
                     ->numeric()
-                ->required()
+                    ->required()
             ])->columns(2);
     }
 
+    protected function getPaymentMethods($provider): array
+    {
+        $methods = [
+            'CIH' => ['Bank Transfer' => 'Bank Transfer'],
+            'paypal' => ['PayPal Account' => 'PayPal Account'],
+            'Stripe' => ['Bank Transfer' => 'Bank Transfer'],
+        ];
+
+        return $methods[$provider] ?? [];
+    }
 
     public function table(Table $table): Table
     {
@@ -72,12 +83,11 @@ class PaymentsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\ColumnGroup::make('Details')
                     ->columns([
-                        Tables\Columns\TextColumn::make('reference')
-                            ->searchable(),
+
 
                         Tables\Columns\TextColumn::make('amount')
                             ->sortable()
-                            ->money(fn ($record) => $record->currency),
+                            ->money("usd"),
                     ]),
 
                 Tables\Columns\ColumnGroup::make('Context')

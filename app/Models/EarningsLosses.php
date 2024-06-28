@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EarningsLosses extends Model
 {
@@ -10,10 +11,10 @@ class EarningsLosses extends Model
         'order_id',
         'earnings',
         'losses',
-        'earnings_losses'
+        'final_cost'
     ];
 
-    public function order()
+    public function order():BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
