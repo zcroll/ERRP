@@ -14,6 +14,7 @@ class CustomerActivityChart extends ApexChartWidget
      * @var string
      */
     protected static ?string $chartId = 'customerActivityChart';
+    protected static ?int $sort = 3;
 
     /**
      * Widget Title

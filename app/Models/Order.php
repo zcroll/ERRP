@@ -26,11 +26,12 @@ class Order extends Model
         'number',
         'status',
         'shipping_address_id',
-        'total_amount',
+        'total_price',
         'customer_id',
         'payment_id',
         'vendor_id',
         'type',
+        'order_id'
 
 
     ];
@@ -52,7 +53,11 @@ class Order extends Model
      * @var mixed|string
      */
 
-
+    public function calculateAndSaveTotal(): void
+    {
+        $this->calculateTotal();
+        $this->save();
+    }
 
     public function customer(): BelongsTo
     {
@@ -124,6 +129,10 @@ class Order extends Model
     public static function boot(): void
     {
         parent::boot();
+        static::saving(static function (Order $order) {
+            Log::info('Order saving: calculating total price for Order ID: ' . $order->id);
+            $order->calculateTotal();
+        });
 
         static::updated(function (Order $order) {
             Log::info('Order updated with ID: ' . $order->id . ' and status: ' . ($order->status ?? 'null'));
@@ -134,12 +143,35 @@ class Order extends Model
 
         static::created(function (Order $order) {
             Log::info('Order created with ID: ' . $order->id . ' and status: ' . ($order->status ?? 'null'));
+            $order->calculateAndSaveTotal();
+
+            if ($order->type === 'purchase') {
+                $order->createPurchaseInvoice();
+            }
+
             if (in_array($order->status, ['delivered', 'returned'])) {
                 $order->calculateEarningsAndLosses();
             }
         });
     }
 
+    public function createPurchaseInvoice(): void
+    {
+        ds($this->total_price);
+        PurchaseInvoice::create([
+            'invoice_date' => now(),
+            'invoice_number' => $this->generateInvoiceNumber(),
+//            'total_amount' => $this->order,
+            'status' => 'pending',
+            'order_id'=> $this->id,
+            'vendor_id' => $this->vendor_id,
+        ]);
+    }
+
+    public function generateInvoiceNumber(): string
+    {
+        return 'INV-' . strtoupper(uniqid('', true));
+    }
 
     public function getCustomerAndVendorAttribute(): string
     {

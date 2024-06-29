@@ -14,9 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->timestamp('invoice_date');
             $table->string('invoice_number');
-            $table->decimal('total_amount', 10, 2);
+//            $table->decimal('total_amount', 10, 2)->nullable();
             $table->string('status', 255);
             $table->foreignId('vendor_id');
+            $table->foreignId('order_id');
             $table->timestamps();
         });
     }

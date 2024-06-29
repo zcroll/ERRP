@@ -84,7 +84,14 @@ class ProductReviewResource extends Resource
             //
         ];
     }
+    public static function getNavigationBadge(): ?string
+    {
+        /** @var class-string<Model> $modelClass */
+        $modelClass = static::$model;
+        $weekStart = now()->startOfWeek();
 
+        return (string) $modelClass::where('created_at', '>=', $weekStart)->where('rating')->count();
+    }
     public static function getQuery(): Builder|_IH_Order_QB
     {
         return Order::with(['customer.personalInfo']);

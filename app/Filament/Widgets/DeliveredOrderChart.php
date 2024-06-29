@@ -21,7 +21,7 @@ class DeliveredOrderChart extends ApexChartWidget
     /**
      * Widget content height
      */
-    protected static ?int $contentHeight = 229;
+    protected static ?int $contentHeight = 270;
 
     protected function getFooter(): string
     {

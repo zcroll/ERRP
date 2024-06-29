@@ -21,6 +21,7 @@ class PurchaseInvoice extends Model
         'total_amount',
         'status',
         'vendor_id',
+        'order_id',
     ];
 
     /**
@@ -31,12 +32,17 @@ class PurchaseInvoice extends Model
     protected $casts = [
         'id' => 'integer',
         'invoice_date' => 'timestamp',
-        'total_amount' => 'decimal:2',
+//        'total_amount' => 'decimal:2',
         'vendor_id' => 'integer',
+        'order_id' => 'integer',
     ];
 
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
+    }
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
     }
 }

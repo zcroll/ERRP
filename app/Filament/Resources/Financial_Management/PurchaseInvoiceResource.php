@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\Financial_Management;
 
-use App\Filament\Resources\PurchaseInvoiceResource\Pages;
-use App\Filament\Resources\PurchaseInvoiceResource\RelationManagers;
 use App\Models\PurchaseInvoice;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,8 +15,7 @@ class PurchaseInvoiceResource extends Resource
 {
     protected static ?string $model = PurchaseInvoice::class;
     protected static ?string $navigationGroup = 'Financial Management';
-
-//    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Start;
 
     public static function form(Form $form): Form
     {
@@ -26,9 +25,7 @@ class PurchaseInvoiceResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('invoice_number')
                     ->required(),
-                Forms\Components\TextInput::make('total_amount')
-                    ->required()
-                    ->numeric(),
+
                 Forms\Components\TextInput::make('status')
                     ->required(),
                 Forms\Components\Select::make('vendor_id')
@@ -46,12 +43,14 @@ class PurchaseInvoiceResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('invoice_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('total_amount')
+                Tables\Columns\TextColumn::make('order.total_price')
+                    ->label('Total Price')
+
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('vendor.id')
+                Tables\Columns\TextColumn::make('vendor.business_name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -68,6 +67,8 @@ class PurchaseInvoiceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
+                        Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -82,13 +83,29 @@ class PurchaseInvoiceResource extends Resource
             //
         ];
     }
+    public static function getNavigationBadge(): ?string
+    {
+        /** @var class-string<Model> $modelClass */
+        $modelClass = static::$model;
+
+        return (string) $modelClass::where('status', 'pending')->count();
+    }
+//    public static function getRecordSubNavigation(Page $page): array
+//    {
+//        return $page->generateNavigationItems([
+//            PurchaseInvoiceResource\Pages\PreviewPurchaseInvoice::class,
+//            // Add dimensions and suppliers
+//
+//        ]);
+//    }
 
     public static function getPages(): array
     {
         return [
+
             'index' => PurchaseInvoiceResource\Pages\ListPurchaseInvoices::route('/'),
-            'create' => PurchaseInvoiceResource\Pages\CreatePurchaseInvoice::route('/create'),
-            'edit' => PurchaseInvoiceResource\Pages\EditPurchaseInvoice::route('/{record}/edit'),
+            'edit'  => PurchaseInvoiceResource\Pages\EditPurchaseInvoice::route('/{record}/edit'),
+            // Add other necessary routes
         ];
     }
 }
