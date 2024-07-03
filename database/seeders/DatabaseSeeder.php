@@ -31,22 +31,22 @@ class DatabaseSeeder extends Seeder
         $products = Product::factory(10)->create();
         $vendors = Vendor::factory(10)->create();
 
-        $orders = Order::factory(50)->create()->each(function ($order) use ($vendors, $customers, $addresses) {
-            $order->customer()->associate($customers->random());
-            $order->vendor()->associate($vendors->random());
-            $order->address()->associate($addresses->random());
-            $order->save();
-        });
+//        $orders = Order::factory(50)->create()->each(function ($order) use ($vendors, $customers, $addresses) {
+//            $order->customer()->associate($customers->random());
+//            $order->vendor()->associate($vendors->random());
+//            $order->address()->associate($addresses->random());
+//            $order->save();
+//        });
 
         $payments = Payment::factory(10)->create()->each(function ($payment) use ($orders) {
             $payment->order()->associate($orders->random());
             $payment->save();
         });
 
-        $orderItems = OrderItem::factory(200)->create()->each(function ($orderItem) use ($orders, $products) {
-            $orderItem->order()->associate($orders->random());
-            $orderItem->product()->associate($products->random());
-            $orderItem->save();
-        });
+//        $orderItems = OrderItem::factory(200)->create()->each(function ($orderItem) use ($orders, $products) {
+//            $orderItem->order()->associate($orders->random());
+//            $orderItem->product()->associate($products->random());
+//            $orderItem->save();
+//        });
     }
 }
