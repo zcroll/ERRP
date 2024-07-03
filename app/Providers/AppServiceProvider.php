@@ -13,8 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        parent::register();
-        FilamentView::registerRenderHook('panels::body.end', static fn(): string => Blade::render("@vite('resources/js/app.js')"));
+//        parent::register();
+//        FilamentView::registerRenderHook('panels::body.end', static fn(): string => Blade::render("@vite('resources/js/app.js')"));
     }
     /**
      * Bootstrap any application services.
