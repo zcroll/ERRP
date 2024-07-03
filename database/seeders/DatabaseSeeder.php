@@ -38,10 +38,10 @@ class DatabaseSeeder extends Seeder
 //            $order->save();
 //        });
 
-        $payments = Payment::factory(10)->create()->each(function ($payment) use ($orders) {
-            $payment->order()->associate($orders->random());
-            $payment->save();
-        });
+//        $payments = Payment::factory(10)->create()->each(function ($payment) use ($orders) {
+//            $payment->order()->associate($orders->random());
+//            $payment->save();
+//        });
 
 //        $orderItems = OrderItem::factory(200)->create()->each(function ($orderItem) use ($orders, $products) {
 //            $orderItem->order()->associate($orders->random());
