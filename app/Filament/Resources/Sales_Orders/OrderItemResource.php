@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Sales_Orders;
 
-use App\Filament\Resources\OrderItemResource\Pages;
-use App\Filament\Resources\OrderItemResource\RelationManagers;
 use App\Models\OrderItem;
 use Filament\Forms;
 use Filament\Forms\Form;

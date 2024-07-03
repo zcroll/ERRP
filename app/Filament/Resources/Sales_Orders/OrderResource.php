@@ -79,9 +79,9 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('address.street_address')
-                    ->words(2)
+                    ->words(2),
 
-                    ->sortable(),
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('customer_and_vendor')
                     ->label('Customer | Vendor')
                     ->getStateUsing(fn ($record) => $record->getCustomerAndVendorAttribute()),
@@ -176,7 +176,7 @@ class OrderResource extends Resource
                     }, shouldOpenInNewTab: true)
                     ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['product_id'])),
             ])
-            ->orderColumn('sort')
+//            ->orderColumn('sort')
             ->defaultItems(1)
             ->hiddenLabel()
             ->columns([
@@ -216,7 +216,7 @@ class OrderResource extends Resource
 
             Select::make('vendor_id')
                 ->relationship('vendor', 'business_name')
-               
+
 //                ->reactive()
 //                ->live()
 //                ->disableOptionsWhenSelectedInSiblingRepeaterItems()
