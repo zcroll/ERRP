@@ -1,6 +1,7 @@
 <?php
 namespace App\Filament\Widgets;
 
+use Illuminate\Support\Facades\DB;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 use App\Models\Order;
 
@@ -34,9 +35,9 @@ class OrderChart extends ApexChartWidget
         $fourYearsAgo = $currentDate->copy()->subYears(4)->startOfYear();
 
         $orders = Order::whereIn('type', ['sale', 'purchase'])
-            ->selectRaw("strftime('%Y', created_at) as year, type, SUM(total_price) as total")
+            ->selectRaw("YEAR(created_at) as year, type, SUM(total_price) as total")
             ->where('created_at', '>=', $fourYearsAgo)
-            ->groupBy('year', 'type')
+            ->groupBy(DB::raw('YEAR(created_at)'), 'type')
             ->orderBy('created_at')
             ->get();
 
