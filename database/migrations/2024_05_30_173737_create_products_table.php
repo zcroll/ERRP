@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('product_code', 50);
             $table->string('name', 100);
 //            $table->string('image', 500);
-            $table->boolean('is_discontinued');
+//            $table->boolean('is_discontinued');
             $table->string('slug')->unique()->nullable();
             $table->string('sku')->unique()->nullable();
             $table->string('barcode')->unique()->nullable();
