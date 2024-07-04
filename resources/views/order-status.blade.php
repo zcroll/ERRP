@@ -1,5 +1,4 @@
-@extends('layouts.nav')
-@section('cc')
+
     <ul class="flex items-center justify-between mt-4 text-center">
         @foreach ($statuses as $status => $count)
             @if($status !== 'processing')
@@ -12,4 +11,4 @@
     </ul>
 
 
-@endsection
+@
