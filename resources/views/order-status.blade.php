@@ -1,4 +1,3 @@
-<x-app-layout>
 
     <ul class="flex items-center justify-between mt-4 text-center">
         @foreach ($statuses as $status => $count)
@@ -10,5 +9,5 @@
             @endif
         @endforeach
     </ul>
-</x-app-layout>
+
 
