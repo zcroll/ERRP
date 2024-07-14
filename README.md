@@ -7,7 +7,7 @@ This project is a Laravel application, reflecting a sophisticated system designe
 
 ## demo
  - **cmcnador.site**
- - email: zcroll@gmail.com
+ - email: hamid@gmail.com
  - password: password
   
 ### Key Features
